@@ -13,12 +13,16 @@ public class MainActivity extends AppCompatActivity {
   @Override public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
+    getSupportFragmentManager()
+        .beginTransaction()
+        .replace(R.id.container_main, new LoginFragment())
+        .commit();
 
     GlassBook app = (GlassBook) getApplication();
-    if (app.getUser() == null) {
-      //Logged out
-    } else {
-      //Logged in
-    }
+    //if (app.getUser() == null) {
+    //  //Logged out
+    //} else {
+    //  //Logged in
+    //}
   }
 }
