@@ -30,4 +30,10 @@ public class Prefs {
 
     return new User(encoded);
   }
+
+  public void setUser(@NonNull final User user) {
+    SharedPreferences.Editor editor = preferences.edit();
+    editor.putString(USER_KEY, user.encode());
+    editor.apply();
+  }
 }

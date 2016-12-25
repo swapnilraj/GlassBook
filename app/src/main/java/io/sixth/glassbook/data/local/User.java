@@ -23,7 +23,7 @@ public class User {
   }
 
   @NonNull
-  private String encode() {
+  public String encode() {
     return String.format("%s: :%s", this.name, this.password);
   }
 
