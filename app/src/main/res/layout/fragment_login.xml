@@ -10,7 +10,7 @@
       android:inputType="textPersonName"
       android:hint="@string/hint_username"
       android:ems="10"
-      android:id="@+id/editText"
+      android:id="@+id/inputUsername"
       />
   <EditText
       android:layout_width="match_parent"
@@ -18,12 +18,12 @@
       android:inputType="textPassword"
       android:hint="@string/hint_password"
       android:ems="10"
-      android:id="@+id/editText2"
+      android:id="@+id/inputPassword"
       />
   <Button
       android:text="@string/submit"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:id="@+id/button"
+      android:id="@+id/loginButton"
       />
 </LinearLayout>
