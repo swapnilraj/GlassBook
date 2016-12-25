@@ -1,7 +1,9 @@
 package io.sixth.glassbook;
 
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
+import io.sixth.glassbook.data.local.User;
 import io.sixth.glassbook.utils.GlassBook;
 
 /**
@@ -13,16 +15,21 @@ public class MainActivity extends AppCompatActivity {
   @Override public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
-    getSupportFragmentManager()
-        .beginTransaction()
-        .replace(R.id.container_main, new LoginFragment())
-        .commit();
+
 
     GlassBook app = (GlassBook) getApplication();
-    //if (app.getUser() == null) {
-    //  //Logged out
-    //} else {
-    //  //Logged in
-    //}
+    User user = app.getUser();
+    Fragment fragment;
+
+    if (user == null) {
+      fragment = new LoginFragment();
+    } else {
+      fragment = new MainFragment();
+    }
+
+    getSupportFragmentManager()
+        .beginTransaction()
+        .replace(R.id.container_main, fragment)
+        .commit();
   }
 }
