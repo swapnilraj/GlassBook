@@ -5,18 +5,18 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 import io.sixth.glassbook.data.local.User;
+import io.sixth.glassbook.utils.ActivityUtils;
 import io.sixth.glassbook.utils.GlassBook;
 
 /**
  * Created by thawne on 25/12/16.
  */
 
-public class MainActivity extends AppCompatActivity implements LoginManager{
+public class MainActivity extends AppCompatActivity implements LoginManager {
 
   @Override public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
-
 
     GlassBook app = (GlassBook) getApplication();
     User user = app.getUser();
@@ -25,17 +25,25 @@ public class MainActivity extends AppCompatActivity implements LoginManager{
     if (user == null) {
       fragment = new LoginFragment();
     } else {
+      final Bundle bundle = new Bundle();
+      bundle.putParcelable(MainFragment.USER, user);
       fragment = new MainFragment();
+      fragment.setArguments(bundle);
     }
 
-    getSupportFragmentManager()
-        .beginTransaction()
-        .replace(R.id.container_main, fragment)
-        .commit();
+    ActivityUtils.loadFragment(getSupportFragmentManager(), fragment, R.id.container_main);
   }
 
   @Override public void onLogin(User user) {
-    Toast.makeText(this, user.encode(), Toast.LENGTH_LONG).show();
+    GlassBook app = (GlassBook) getApplication();
+    app.setUser(user);
+
+    Fragment fragment = new MainFragment();
+    final Bundle bundle = new Bundle();
+    bundle.putParcelable(MainFragment.USER, user);
+    fragment.setArguments(bundle);
+
+    ActivityUtils.loadFragment(getSupportFragmentManager(), fragment, R.id.container_main);
   }
 
   @Override public void onFail() {

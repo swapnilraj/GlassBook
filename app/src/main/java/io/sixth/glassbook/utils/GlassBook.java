@@ -1,6 +1,7 @@
 package io.sixth.glassbook.utils;
 
 import android.app.Application;
+import android.support.annotation.NonNull;
 import com.facebook.stetho.Stetho;
 import io.sixth.glassbook.data.local.User;
 
@@ -20,5 +21,9 @@ public class GlassBook extends Application {
 
   public User getUser() {
     return prefs.getUser();
+  }
+
+  public void setUser(@NonNull final User user) {
+    prefs.setUser(user);
   }
 }
