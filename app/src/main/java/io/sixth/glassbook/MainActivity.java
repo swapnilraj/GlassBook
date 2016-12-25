@@ -26,8 +26,8 @@ public class MainActivity extends AppCompatActivity implements LoginManager {
       fragment = new LoginFragment();
     } else {
       final Bundle bundle = new Bundle();
-      bundle.putParcelable(MainFragment.USER, user);
-      fragment = new MainFragment();
+      bundle.putParcelable(AvailabilityScheduleFragment.USER, user);
+      fragment = new AvailabilityScheduleFragment();
       fragment.setArguments(bundle);
     }
 
@@ -38,9 +38,9 @@ public class MainActivity extends AppCompatActivity implements LoginManager {
     GlassBook app = (GlassBook) getApplication();
     app.setUser(user);
 
-    Fragment fragment = new MainFragment();
+    Fragment fragment = new AvailabilityScheduleFragment();
     final Bundle bundle = new Bundle();
-    bundle.putParcelable(MainFragment.USER, user);
+    bundle.putParcelable(AvailabilityScheduleFragment.USER, user);
     fragment.setArguments(bundle);
 
     ActivityUtils.loadFragment(getSupportFragmentManager(), fragment, R.id.container_main);

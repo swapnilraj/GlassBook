@@ -13,18 +13,18 @@ import io.sixth.glassbook.data.local.User;
  * Created by thawne on 26/12/16.
  */
 
-public class MainFragment extends Fragment {
+public class AvailabilityScheduleFragment extends Fragment {
 
   public static String USER = "user";
 
-  public MainFragment() {
+  public AvailabilityScheduleFragment() {
   }
 
   @Nullable @Override
   public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
       @Nullable Bundle savedInstanceState) {
 
-    View view = inflater.inflate(R.layout.fragmetn_main, null);
+    View view = inflater.inflate(R.layout.fragment_availability_schedule, null);
     TextView greeting = (TextView) view.findViewById(R.id.greetingText);
 
     User user = getArguments().getParcelable(USER);
