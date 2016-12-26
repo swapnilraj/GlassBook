@@ -30,5 +30,7 @@ dependencies {
   compile "com.android.support:appcompat-v7:${supportLibVersion}"
   compile "com.android.support:support-annotations:${supportLibVersion}"
   compile 'com.facebook.stetho:stetho:1.4.2'
+  compile 'com.squareup.okhttp3:okhttp:3.5.0'
+  compile 'com.squareup.okio:okio:1.11.0'
   testCompile 'junit:junit:4.12'
 }
