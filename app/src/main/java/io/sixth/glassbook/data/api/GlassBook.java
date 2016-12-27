@@ -1,8 +1,5 @@
 package io.sixth.glassbook.data.api;
 
-import android.util.Log;
-import android.widget.Toast;
-import io.realm.Realm;
 import io.sixth.glassbook.data.local.User;
 import java.io.IOException;
 import okhttp3.Call;
@@ -13,7 +10,6 @@ import okhttp3.Request;
 import okhttp3.Response;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.jsoup.nodes.DocumentType;
 import org.jsoup.select.Elements;
 
 /**
@@ -22,13 +18,17 @@ import org.jsoup.select.Elements;
 
 public class GlassBook {
 
+  final static String BASE_URL = "https://www.scss.tcd.ie/cgi-bin/webcal/sgmr";
+
   public interface AuthListener {
     void onResult(User user);
   }
 
   public static void authenticate(final String username, final String password,
       final AuthListener listener) {
-    String url = "https://www.scss.tcd.ie/cgi-bin/webcal/sgmr/sgmr1.request.pl";
+
+    final String selector = "body > h1:nth-child(3)";
+    String url = BASE_URL + "/sgmr1.request.pl";
     OkHttpClient client = new OkHttpClient();
 
     final Request request = new Request.Builder().url(url)
@@ -43,7 +43,7 @@ public class GlassBook {
       @Override public void onResponse(Call call, Response response) throws IOException {
         if (response.isSuccessful()) {
           final Document doc = Jsoup.parse(response.body().string());
-          final Elements ele = doc.select("body > h1:nth-child(3)");
+          final Elements ele = doc.select(selector);
           final String metaContainer = ele.text();
           final String[] content = metaContainer.split(" ");
 

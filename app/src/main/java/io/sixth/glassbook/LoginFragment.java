@@ -1,20 +1,16 @@
 package io.sixth.glassbook;
 
-import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import io.realm.Realm;
 import io.sixth.glassbook.data.api.GlassBook;
 import io.sixth.glassbook.data.local.User;
-import io.sixth.glassbook.utils.FragmentUtils;
 
 /**
  * Created by thawne on 26/12/16.
@@ -59,7 +55,6 @@ public class LoginFragment extends Fragment implements View.OnClickListener,
       mLoginManager.onFail();
     } else {
       GlassBook.authenticate(username, password, this);
-      //mLoginManager.onLogin(mUsername, mPassword);
     }
   }
 

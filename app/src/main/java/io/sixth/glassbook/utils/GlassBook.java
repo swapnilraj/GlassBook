@@ -36,5 +36,4 @@ public class GlassBook extends Application {
           }
         });
   }
-
 }
