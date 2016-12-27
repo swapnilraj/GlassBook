@@ -3,6 +3,7 @@ package io.sixth.glassbook.utils;
 import android.app.Application;
 import android.support.annotation.NonNull;
 import com.facebook.stetho.Stetho;
+import io.realm.Realm;
 import io.sixth.glassbook.data.local.User;
 
 /**
@@ -11,19 +12,29 @@ import io.sixth.glassbook.data.local.User;
 
 public class GlassBook extends Application {
 
-  private Prefs prefs;
-
   @Override public void onCreate() {
     super.onCreate();
+    Realm.init(this);
     Stetho.initializeWithDefaults(this);
-    prefs = new Prefs(this);
   }
 
   public User getUser() {
-    return prefs.getUser();
+    Realm realm = Realm.getDefaultInstance();
+    try {
+      return realm.where(User.class).findAll().first();
+    } catch (IndexOutOfBoundsException exception) {
+      return null;
+    }
   }
 
   public void setUser(@NonNull final User user) {
-    prefs.setUser(user);
+    Realm
+        .getDefaultInstance()
+        .executeTransactionAsync(new Realm.Transaction() {
+          @Override public void execute(final Realm realm) {
+            realm.copyToRealm(user);
+          }
+        });
   }
+
 }

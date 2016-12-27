@@ -2,35 +2,60 @@ package io.sixth.glassbook.data.local;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.support.annotation.NonNull;
+import io.realm.RealmObject;
 
 /**
  * Created by thawne on 26/12/16.
  */
 
-public class User implements Parcelable {
+public class User extends RealmObject implements Parcelable {
 
-  private final String name;
-  private final String password;
+  public User() {}
 
-  public User(@NonNull final String encoded) {
-    final String[] decoded = encoded.split(": :");
-    this.name = decoded[0];
-    this.password = decoded[1];
+  private String firstName;
+  private String lastName;
+  private String status;
+  private String username;
+  private String password;
+
+  public String getFirstName() {
+    return firstName;
   }
 
-  public User(@NonNull final String name, @NonNull final String password) {
-    this.name = name;
+  public void setFirstName(String firstName) {
+    this.firstName = firstName;
+  }
+
+  public String getLastName() {
+    return lastName;
+  }
+
+  public void setLastName(String lastName) {
+    this.lastName = lastName;
+  }
+
+  public String getStatus() {
+    return status;
+  }
+
+  public void setStatus(String status) {
+    this.status = status;
+  }
+
+  public String getUsername() {
+    return username;
+  }
+
+  public void setUsername(String username) {
+    this.username = username;
+  }
+
+  public String getPassword() {
+    return password;
+  }
+
+  public void setPassword(String password) {
     this.password = password;
-  }
-
-  public String getName() {
-    return name;
-  }
-
-  @NonNull
-  public String encode() {
-    return String.format("%s: :%s", this.name, this.password);
   }
 
   @Override public int describeContents() {
@@ -38,12 +63,18 @@ public class User implements Parcelable {
   }
 
   @Override public void writeToParcel(Parcel dest, int flags) {
-    dest.writeString(this.name);
+    dest.writeString(this.firstName);
+    dest.writeString(this.lastName);
+    dest.writeString(this.status);
+    dest.writeString(this.username);
     dest.writeString(this.password);
   }
 
   protected User(Parcel in) {
-    this.name = in.readString();
+    this.firstName = in.readString();
+    this.lastName = in.readString();
+    this.status = in.readString();
+    this.username = in.readString();
     this.password = in.readString();
   }
 
@@ -56,4 +87,14 @@ public class User implements Parcelable {
       return new User[size];
     }
   };
+
+  @Override public String toString() {
+    return "User{" +
+        "firstName='" + firstName + '\'' +
+        ", lastName='" + lastName + '\'' +
+        ", status='" + status + '\'' +
+        ", username='" + username + '\'' +
+        ", password='" + password + '\'' +
+        '}';
+  }
 }

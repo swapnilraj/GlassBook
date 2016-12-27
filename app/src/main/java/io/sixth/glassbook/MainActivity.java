@@ -1,6 +1,7 @@
 package io.sixth.glassbook;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
@@ -34,9 +35,13 @@ public class MainActivity extends AppCompatActivity implements LoginManager {
     ActivityUtils.loadFragment(getSupportFragmentManager(), fragment, R.id.container_main);
   }
 
-  @Override public void onLogin(User user) {
-    GlassBook app = (GlassBook) getApplication();
-    app.setUser(user);
+  @Override public void onLogin(@NonNull final User user) {
+    runOnUiThread(new Runnable() {
+      @Override public void run() {
+        GlassBook app = (GlassBook) getApplication();
+        app.setUser(user);
+      }
+    });
 
     Fragment fragment = new AvailabilityScheduleFragment();
     final Bundle bundle = new Bundle();
