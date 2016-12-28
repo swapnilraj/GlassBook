@@ -28,10 +28,6 @@ public class GlassBook {
   final private static String BASE_URL = "https://www.scss.tcd.ie/cgi-bin/webcal/sgmr";
   private static GlassBookApp app;
 
-  private static OkHttpClient getClient() {
-    return new OkHttpClient.Builder().addNetworkInterceptor(new StethoInterceptor()).build();
-  }
-
   public interface AuthListener {
     void onLoginSuccess(User user);
     void onLoginFail(Response response);
@@ -50,7 +46,7 @@ public class GlassBook {
 
     final String selector = "body > h1";
     String authURL = BASE_URL + "/sgmr1.cancel.pl";
-    OkHttpClient client = getClient();
+    OkHttpClient client = app.getClient();
 
     final Request request = new Request.Builder().url(authURL)
         .header("Authorization", Credentials.basic(username, password))
@@ -86,7 +82,7 @@ public class GlassBook {
   public static void bookRoom(Calendar startTime, final int roomNumber,
       final RequestListener listener) {
     String requestURL = BASE_URL + String.format(Locale.ENGLISH, "/sgmr%d.request.pl", roomNumber);
-    OkHttpClient client = getClient();
+    OkHttpClient client = app.getClient();
 
     User user = app.getUser();
 

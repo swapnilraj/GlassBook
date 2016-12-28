@@ -2,6 +2,7 @@ package io.sixth.glassbook;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
@@ -14,6 +15,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import io.sixth.glassbook.data.api.GlassBook;
 import io.sixth.glassbook.data.local.User;
+import io.sixth.glassbook.utils.FragmentUtils;
 import okhttp3.Response;
 
 /**
@@ -92,15 +94,23 @@ public class LoginFragment extends Fragment
     }
   }
 
-  @Override public void onLoginFail(Response response) {
-    dismissLoading();
-    if (response.code() == 401 && getView() != null) {
-      Snackbar.make(getView(), R.string.error_unauth, Snackbar.LENGTH_LONG).show();
-    }
+  @Override public void onLoginFail(@NonNull final Response response) {
+    FragmentUtils.runOnUi(this, new Runnable() {
+      @Override public void run() {
+        dismissLoading();
+        if (response.code() == 401 && getView() != null) {
+          Snackbar.make(getView(), R.string.error_unauth, Snackbar.LENGTH_LONG).show();
+        }
+      }
+    });
   }
 
   @Override public void onLoginSuccess(final User user) {
-    dismissLoading();
-    mLoginManager.onLogin(user);
+    FragmentUtils.runOnUi(this, new Runnable() {
+      @Override public void run() {
+        dismissLoading();
+        mLoginManager.onLogin(user);
+      }
+    });
   }
 }
