@@ -33,5 +33,6 @@ dependencies {
   compile 'com.squareup.okhttp3:okhttp:3.5.0'
   compile 'com.squareup.okio:okio:1.11.0'
   compile 'org.jsoup:jsoup:1.10.1'
+  compile 'com.wdullaer:materialdatetimepicker:3.0.0'
   testCompile 'junit:junit:4.12'
 }

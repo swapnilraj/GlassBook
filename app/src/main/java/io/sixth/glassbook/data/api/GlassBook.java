@@ -18,7 +18,7 @@ import org.jsoup.select.Elements;
 
 public class GlassBook {
 
-  final static String BASE_URL = "https://www.scss.tcd.ie/cgi-bin/webcal/sgmr";
+  final private static String BASE_URL = "https://www.scss.tcd.ie/cgi-bin/webcal/sgmr";
 
   public interface AuthListener {
     void onResult(User user);
@@ -28,10 +28,10 @@ public class GlassBook {
       final AuthListener listener) {
 
     final String selector = "body > h1:nth-child(3)";
-    String url = BASE_URL + "/sgmr1.request.pl";
+    String authUrl = BASE_URL + "/sgmr1.request.pl";
     OkHttpClient client = new OkHttpClient();
 
-    final Request request = new Request.Builder().url(url)
+    final Request request = new Request.Builder().url(authUrl)
         .header("Authorization", Credentials.basic(username, password))
         .build();
 

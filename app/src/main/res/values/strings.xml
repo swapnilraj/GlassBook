@@ -3,4 +3,6 @@
   <string name="hint_password">Password</string>
   <string name="hint_username">Username</string>
   <string name="submit">Login</string>
+  <string name="book_button">Book</string>
+  <string name="greeting">Hello</string>
 </resources>
