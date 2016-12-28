@@ -118,7 +118,7 @@ public class AvailabilityScheduleFragment extends Fragment
           final String metaContainer = ele.text();
           final String content =
               metaContainer.substring(0, metaContainer.indexOf(user.getFirstName()));
-          mResponse.setText(content + "\n" + response);
+          mResponse.setText(content);
         }
       }
     });
