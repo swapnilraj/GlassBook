@@ -47,8 +47,8 @@ public class GlassBook {
   public static void authenticate(final String username, final String password,
       final AuthListener listener) {
 
-    final String selector = "body > h1:nth-child(3)";
-    String authURL = BASE_URL + "/sgmr1.request.pl";
+    final String selector = "body > h1";
+    String authURL = BASE_URL + "/sgmr1.cancel.pl";
     OkHttpClient client = getClient();
 
     final Request request = new Request.Builder().url(authURL)
@@ -68,9 +68,9 @@ public class GlassBook {
           final String[] content = metaContainer.split(" ");
 
           final User user = new User();
-          user.setFirstName(content[3]);
-          user.setLastName(content[4]);
-          user.setStatus(content[5].substring(1, content[5].length() - 1));
+          user.setFirstName(content[10]);
+          user.setLastName(content[11]);
+          user.setStatus(content[12].substring(1, content[12].length() - 1));
           user.setUsername(username);
           user.setPassword(password);
 
