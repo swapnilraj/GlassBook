@@ -36,9 +36,9 @@ public class AvailabilityScheduleFragment extends Fragment
   private TextView greeting;
   private TextView mResponse;
   private Calendar startTime;
-  private View rootView;
   private User user;
   private int roomNumber = 1;
+  private View rootView;
 
   public AvailabilityScheduleFragment() {
   }
@@ -81,6 +81,7 @@ public class AvailabilityScheduleFragment extends Fragment
 
   @Override public void onTimeSet(TimePickerDialog view, int hourOfDay, int minute, int second) {
     startTime.set(Calendar.HOUR_OF_DAY, hourOfDay);
+    Snackbar.make(rootView, R.string.request_booking, Snackbar.LENGTH_LONG).show();
     GlassBook.bookRoom(startTime, roomNumber, this);
   }
 
@@ -101,6 +102,12 @@ public class AvailabilityScheduleFragment extends Fragment
   @Override public void onResult(final String response) {
     FragmentUtils.runOnUi(this, new Runnable() {
       @Override public void run() {
+        View rootView = getView();
+
+        if (rootView == null) {
+          return;
+        }
+
         if (response.contains("pending")) {
           Snackbar.make(rootView, R.string.fail, Snackbar.LENGTH_LONG).show();
         } else {

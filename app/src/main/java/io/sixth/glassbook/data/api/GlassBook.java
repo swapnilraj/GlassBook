@@ -33,7 +33,8 @@ public class GlassBook {
   }
 
   public interface AuthListener {
-    void onResult(User user);
+    void onLoginSuccess(User user);
+    void onLoginFail(Response response);
   }
 
   public interface RequestListener {
@@ -74,7 +75,9 @@ public class GlassBook {
           user.setUsername(username);
           user.setPassword(password);
 
-          listener.onResult(user);
+          listener.onLoginSuccess(user);
+        } else {
+          listener.onLoginFail(response);
         }
       }
     });
