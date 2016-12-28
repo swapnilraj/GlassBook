@@ -7,7 +7,10 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.Spinner;
 import android.widget.TextView;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 import com.wdullaer.materialdatetimepicker.time.TimePickerDialog;
@@ -26,14 +29,16 @@ import org.jsoup.select.Elements;
 
 public class AvailabilityScheduleFragment extends Fragment
     implements View.OnClickListener, TimePickerDialog.OnTimeSetListener,
-    DatePickerDialog.OnDateSetListener, GlassBook.RequestListener {
+    DatePickerDialog.OnDateSetListener, GlassBook.RequestListener,
+    AdapterView.OnItemSelectedListener {
 
   public static String USER = "user";
   private TextView greeting;
   private TextView mResponse;
   private Calendar startTime;
-  private View view;
+  private View rootView;
   private User user;
+  private int roomNumber = 1;
 
   public AvailabilityScheduleFragment() {
   }
@@ -41,20 +46,28 @@ public class AvailabilityScheduleFragment extends Fragment
   @Nullable @Override
   public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
       @Nullable Bundle savedInstanceState) {
-    view = inflater.inflate(R.layout.fragment_availability_schedule, null);
-    greeting = (TextView) view.findViewById(R.id.greetingText);
-    mResponse = (TextView) view.findViewById(R.id.responseText);
-    Button button = (Button) view.findViewById(R.id.buttonBook);
+    rootView = inflater.inflate(R.layout.fragment_availability_schedule, null);
+
+    Spinner spinner = (Spinner) rootView.findViewById(R.id.spinner);
+    ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),
+        R.array.rooms, android.R.layout.simple_spinner_item);
+    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+    spinner.setAdapter(adapter);
+    spinner.setOnItemSelectedListener(this);
+
+    greeting = (TextView) rootView.findViewById(R.id.greetingText);
+    mResponse = (TextView) rootView.findViewById(R.id.responseText);
+    Button button = (Button) rootView.findViewById(R.id.buttonBook);
     button.setOnClickListener(this);
 
     user = getArguments().getParcelable(USER);
     if (user == null) {
-      return view;
+      return rootView;
     }
     String name = user.getFirstName();
     greeting.append(" " + name);
 
-    return view;
+    return rootView;
   }
 
   @Override public void onClick(View v) {
@@ -68,7 +81,7 @@ public class AvailabilityScheduleFragment extends Fragment
 
   @Override public void onTimeSet(TimePickerDialog view, int hourOfDay, int minute, int second) {
     startTime.set(Calendar.HOUR_OF_DAY, hourOfDay);
-    GlassBook.bookRoom(startTime, this);
+    GlassBook.bookRoom(startTime, roomNumber, this);
   }
 
   @Override
@@ -89,10 +102,10 @@ public class AvailabilityScheduleFragment extends Fragment
     FragmentUtils.runOnUi(this, new Runnable() {
       @Override public void run() {
         if (response.contains("pending")) {
-          Snackbar.make(view, R.string.fail, Snackbar.LENGTH_LONG).show();
+          Snackbar.make(rootView, R.string.fail, Snackbar.LENGTH_LONG).show();
         } else {
           final String selector = "body > p:nth-child(3)";
-          Snackbar.make(view, R.string.success, Snackbar.LENGTH_LONG).show();
+          Snackbar.make(rootView, R.string.success, Snackbar.LENGTH_LONG).show();
           final Document doc = Jsoup.parse(response);
           final Elements ele = doc.select(selector);
           final String metaContainer = ele.text();
@@ -102,5 +115,13 @@ public class AvailabilityScheduleFragment extends Fragment
         }
       }
     });
+  }
+
+  @Override public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+    roomNumber = position + 1;
+  }
+
+  @Override public void onNothingSelected(AdapterView<?> parent) {
+
   }
 }

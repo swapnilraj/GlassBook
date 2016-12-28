@@ -7,4 +7,15 @@
   <string name="greeting">Hello</string>
   <string name="success">Booking Successful</string>
   <string name="fail">Booking Pending</string>
+  <string-array name="rooms">
+    <item>Room 1</item>
+    <item>Room 2</item>
+    <item>Room 3</item>
+    <item>Room 4</item>
+    <item>Room 5</item>
+    <item>Room 6</item>
+    <item>Room 7</item>
+    <item>Room 8</item>
+    <item>Room 9</item>
+  </string-array>
 </resources>

@@ -1,10 +1,12 @@
 package io.sixth.glassbook.data.api;
 
+import android.support.design.widget.Snackbar;
 import com.facebook.stetho.okhttp3.StethoInterceptor;
 import io.sixth.glassbook.data.local.User;
 import io.sixth.glassbook.utils.GlassBookApp;
 import java.io.IOException;
 import java.util.Calendar;
+import java.util.Locale;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Credentials;
@@ -27,9 +29,7 @@ public class GlassBook {
   private static GlassBookApp app;
 
   private static OkHttpClient getClient() {
-    return new OkHttpClient.Builder()
-        .addNetworkInterceptor(new StethoInterceptor())
-        .build();
+    return new OkHttpClient.Builder().addNetworkInterceptor(new StethoInterceptor()).build();
   }
 
   public interface AuthListener {
@@ -80,14 +80,15 @@ public class GlassBook {
     });
   }
 
-  public static void bookRoom(Calendar startTime, final RequestListener listener) {
-    String requestURL = BASE_URL + "/sgmr1.request.pl";
+  public static void bookRoom(Calendar startTime, final int roomNumber,
+      final RequestListener listener) {
+    String requestURL = BASE_URL + String.format(Locale.ENGLISH, "/sgmr%d.request.pl", roomNumber);
     OkHttpClient client = getClient();
 
     User user = app.getUser();
 
-    RequestBody formBody = new FormBody.Builder()
-        .add("StartTime", Integer.toString(startTime.get(Calendar.HOUR_OF_DAY) + 1))
+    RequestBody formBody = new FormBody.Builder().add("StartTime",
+        Integer.toString(startTime.get(Calendar.HOUR_OF_DAY) + 1))
         .add("EndTime", Integer.toString(startTime.get(Calendar.HOUR_OF_DAY) + 2))
         .add("Fullname", user.getFirstName())
         .add("Status", user.getStatus())
@@ -96,8 +97,7 @@ public class GlassBook {
         .add("StartYear", Integer.toString(startTime.get(Calendar.YEAR) - 2015))
         .build();
 
-    Request request = new Request.Builder()
-        .url(requestURL)
+    Request request = new Request.Builder().url(requestURL)
         .header("Authorization", Credentials.basic(user.getUsername(), user.getPassword()))
         .post(formBody)
         .build();
