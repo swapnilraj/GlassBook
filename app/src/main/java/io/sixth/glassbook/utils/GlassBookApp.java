@@ -4,18 +4,20 @@ import android.app.Application;
 import android.support.annotation.NonNull;
 import com.facebook.stetho.Stetho;
 import io.realm.Realm;
+import io.sixth.glassbook.data.api.GlassBook;
 import io.sixth.glassbook.data.local.User;
 
 /**
  * Created by thawne on 26/12/16.
  */
 
-public class GlassBook extends Application {
+public class GlassBookApp extends Application {
 
   @Override public void onCreate() {
     super.onCreate();
     Realm.init(this);
     Stetho.initializeWithDefaults(this);
+    GlassBook.setApplicationInstance(this);
   }
 
   public User getUser() {

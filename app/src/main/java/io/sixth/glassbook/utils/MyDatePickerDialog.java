@@ -1,6 +1,5 @@
 package io.sixth.glassbook.utils;
 
-import android.util.Log;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 import java.util.Calendar;
 

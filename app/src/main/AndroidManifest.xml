@@ -7,7 +7,7 @@
       android:label="@string/app_name"
       android:supportsRtl="true"
       android:theme="@style/AppTheme"
-      android:name=".utils.GlassBook">
+      android:name=".utils.GlassBookApp">
 
     <activity
         android:name=".MainActivity"

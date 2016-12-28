@@ -10,9 +10,13 @@ import android.widget.Button;
 import android.widget.TextView;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 import com.wdullaer.materialdatetimepicker.time.TimePickerDialog;
+import io.sixth.glassbook.data.api.GlassBook;
 import io.sixth.glassbook.data.local.User;
+import io.sixth.glassbook.utils.FragmentUtils;
 import io.sixth.glassbook.utils.MyDatePickerDialog;
+import java.io.IOException;
 import java.util.Calendar;
+import okhttp3.Response;
 
 /**
  * Created by thawne on 26/12/16.
@@ -20,10 +24,12 @@ import java.util.Calendar;
 
 public class AvailabilityScheduleFragment extends Fragment
     implements View.OnClickListener, TimePickerDialog.OnTimeSetListener,
-    DatePickerDialog.OnDateSetListener {
+    DatePickerDialog.OnDateSetListener, GlassBook.RequestListener {
 
   public static String USER = "user";
   private TextView greeting;
+  private TextView mResponse;
+  private Calendar startTime;
 
   public AvailabilityScheduleFragment() {
   }
@@ -33,6 +39,7 @@ public class AvailabilityScheduleFragment extends Fragment
       @Nullable Bundle savedInstanceState) {
     View view = inflater.inflate(R.layout.fragment_availability_schedule, null);
     greeting = (TextView) view.findViewById(R.id.greetingText);
+    mResponse = (TextView) view.findViewById(R.id.responseText);
     Button button = (Button) view.findViewById(R.id.buttonBook);
     button.setOnClickListener(this);
 
@@ -56,17 +63,28 @@ public class AvailabilityScheduleFragment extends Fragment
   }
 
   @Override public void onTimeSet(TimePickerDialog view, int hourOfDay, int minute, int second) {
-
+    startTime.set(Calendar.HOUR_OF_DAY, hourOfDay);
+    GlassBook.bookRoom(startTime, this);
   }
 
   @Override
   public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
+    startTime = Calendar.getInstance();
+    startTime.set(year, monthOfYear, dayOfMonth);
     Calendar now = Calendar.getInstance();
     TimePickerDialog tpd =
         TimePickerDialog.newInstance(this, now.get(Calendar.HOUR_OF_DAY), 0, true);
     if (dayOfMonth == now.get(Calendar.DATE)) {
       tpd.setMinTime(now.get(Calendar.HOUR_OF_DAY), 0, 0);
     }
-    tpd.show(getActivity().getFragmentManager(), "Datepickerdialog");
+    tpd.show(getActivity().getFragmentManager(), "Timepickerdialog");
+  }
+
+  @Override public void onResult(final String response) {
+    FragmentUtils.runOnUi(this, new Runnable() {
+      @Override public void run() {
+        mResponse.setText(response);
+      }
+    });
   }
 }

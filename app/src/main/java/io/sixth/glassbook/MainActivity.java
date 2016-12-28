@@ -7,7 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 import io.sixth.glassbook.data.local.User;
 import io.sixth.glassbook.utils.ActivityUtils;
-import io.sixth.glassbook.utils.GlassBook;
+import io.sixth.glassbook.utils.GlassBookApp;
 
 /**
  * Created by thawne on 25/12/16.
@@ -19,7 +19,7 @@ public class MainActivity extends AppCompatActivity implements LoginManager {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
 
-    GlassBook app = (GlassBook) getApplication();
+    GlassBookApp app = (GlassBookApp) getApplication();
     User user = app.getUser();
     Fragment fragment;
 
@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity implements LoginManager {
   @Override public void onLogin(@NonNull final User user) {
     runOnUiThread(new Runnable() {
       @Override public void run() {
-        GlassBook app = (GlassBook) getApplication();
+        GlassBookApp app = (GlassBookApp) getApplication();
         app.setUser(user);
       }
     });
