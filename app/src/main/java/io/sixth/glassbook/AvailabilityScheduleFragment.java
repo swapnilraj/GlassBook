@@ -15,9 +15,10 @@ import io.sixth.glassbook.data.api.GlassBook;
 import io.sixth.glassbook.data.local.User;
 import io.sixth.glassbook.utils.FragmentUtils;
 import io.sixth.glassbook.utils.MyDatePickerDialog;
-import java.io.IOException;
 import java.util.Calendar;
-import okhttp3.Response;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.select.Elements;
 
 /**
  * Created by thawne on 26/12/16.
@@ -32,6 +33,7 @@ public class AvailabilityScheduleFragment extends Fragment
   private TextView mResponse;
   private Calendar startTime;
   private View view;
+  private User user;
 
   public AvailabilityScheduleFragment() {
   }
@@ -45,7 +47,7 @@ public class AvailabilityScheduleFragment extends Fragment
     Button button = (Button) view.findViewById(R.id.buttonBook);
     button.setOnClickListener(this);
 
-    final User user = getArguments().getParcelable(USER);
+    user = getArguments().getParcelable(USER);
     if (user == null) {
       return view;
     }
@@ -87,10 +89,17 @@ public class AvailabilityScheduleFragment extends Fragment
     FragmentUtils.runOnUi(this, new Runnable() {
       @Override public void run() {
         if (response.contains("pending")) {
+          Snackbar.make(view, R.string.fail, Snackbar.LENGTH_LONG).show();
+        } else {
+          final String selector = "body > p:nth-child(3)";
           Snackbar.make(view, R.string.success, Snackbar.LENGTH_LONG).show();
+          final Document doc = Jsoup.parse(response);
+          final Elements ele = doc.select(selector);
+          final String metaContainer = ele.text();
+          final String content =
+              metaContainer.substring(0, metaContainer.indexOf(user.getFirstName()));
+          mResponse.setText(content + "\n" + response);
         }
-        Snackbar.make(view, R.string.fail, Snackbar.LENGTH_LONG).show();
-        mResponse.setText(response);
       }
     });
   }
