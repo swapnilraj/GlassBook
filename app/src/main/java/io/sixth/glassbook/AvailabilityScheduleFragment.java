@@ -2,6 +2,7 @@ package io.sixth.glassbook;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,6 +31,7 @@ public class AvailabilityScheduleFragment extends Fragment
   private TextView greeting;
   private TextView mResponse;
   private Calendar startTime;
+  private View view;
 
   public AvailabilityScheduleFragment() {
   }
@@ -37,7 +39,7 @@ public class AvailabilityScheduleFragment extends Fragment
   @Nullable @Override
   public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
       @Nullable Bundle savedInstanceState) {
-    View view = inflater.inflate(R.layout.fragment_availability_schedule, null);
+    view = inflater.inflate(R.layout.fragment_availability_schedule, null);
     greeting = (TextView) view.findViewById(R.id.greetingText);
     mResponse = (TextView) view.findViewById(R.id.responseText);
     Button button = (Button) view.findViewById(R.id.buttonBook);
@@ -84,6 +86,10 @@ public class AvailabilityScheduleFragment extends Fragment
   @Override public void onResult(final String response) {
     FragmentUtils.runOnUi(this, new Runnable() {
       @Override public void run() {
+        if (response.contains("pending")) {
+          Snackbar.make(view, R.string.success, Snackbar.LENGTH_LONG).show();
+        }
+        Snackbar.make(view, R.string.fail, Snackbar.LENGTH_LONG).show();
         mResponse.setText(response);
       }
     });

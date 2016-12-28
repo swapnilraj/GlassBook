@@ -5,4 +5,6 @@
   <string name="submit">Login</string>
   <string name="book_button">Book</string>
   <string name="greeting">Hello</string>
+  <string name="success">Booking Successful</string>
+  <string name="fail">Booking Pending</string>
 </resources>
