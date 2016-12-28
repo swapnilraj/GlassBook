@@ -1,9 +1,19 @@
 apply plugin: 'com.android.application'
 apply plugin: 'realm-android'
 
+import com.android.build.OutputFile
+
 android {
   compileSdkVersion 25
   buildToolsVersion "25.0.2"
+  splits {
+    abi {
+      reset()
+      enable true
+      universalApk false  // If true, also generate a universal APK
+      include "armeabi-v7a", "x86"
+    }
+  }
   defaultConfig {
     applicationId "io.sixth.glassbook"
     minSdkVersion 19
@@ -13,9 +23,24 @@ android {
     testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
   }
   buildTypes {
+    debug {
+      applicationIdSuffix ".debug"
+    }
     release {
       minifyEnabled false
       proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+    }
+  }
+  applicationVariants.all { variant ->
+    variant.outputs.each { output ->
+      // For each separate APK per architecture, set a unique version code as described here:
+      // http://tools.android.com/tech-docs/new-build-system/user-guide/apk-splits
+      def versionCodes = ["x86": 0, "armeabi-v7a": 1]
+      def abi = output.getFilter(OutputFile.ABI)
+      if (abi != null) {  // null for the universal-debug, universal-release variants
+        output.versionCodeOverride =
+            versionCodes.get(abi) + output.versionCode
+      }
     }
   }
 }
