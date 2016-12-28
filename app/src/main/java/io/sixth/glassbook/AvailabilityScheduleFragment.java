@@ -74,6 +74,7 @@ public class AvailabilityScheduleFragment extends Fragment
     Calendar now = Calendar.getInstance();
     TimePickerDialog tpd =
         TimePickerDialog.newInstance(this, now.get(Calendar.HOUR_OF_DAY), 0, true);
+    tpd.setTimeInterval(1, 60, 60);
     if (dayOfMonth == now.get(Calendar.DATE)) {
       tpd.setMinTime(now.get(Calendar.HOUR_OF_DAY), 0, 0);
     }
