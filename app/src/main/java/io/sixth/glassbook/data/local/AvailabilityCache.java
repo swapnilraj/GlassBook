@@ -16,7 +16,7 @@ import java.util.Scanner;
  * Created by Jorik on 28/12/16.
  */
 
-public class AvailabilityCache extends RealmObject implements Parcelable, GlassBook.RequestListener {
+public class AvailabilityCache extends RealmObject implements Parcelable, GlassBook.AvailabilityListener {
 
     public String availabilityList = "";
     public long lastUpdate;
@@ -24,7 +24,7 @@ public class AvailabilityCache extends RealmObject implements Parcelable, GlassB
     public AvailabilityCache() {
     }
 
-    public void onResult(String response) {
+    public void onAvailable(String response) {
         this.availabilityList += ((response.equals(""))? "\n" + response : response );
     }
 
@@ -41,8 +41,6 @@ public class AvailabilityCache extends RealmObject implements Parcelable, GlassB
         //}
         realm.commitTransaction();
     }
-
-
 
     public boolean roomIsFree(int room, int time) {
         update();

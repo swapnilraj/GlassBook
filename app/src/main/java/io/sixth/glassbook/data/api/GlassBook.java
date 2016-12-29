@@ -41,6 +41,10 @@ public class GlassBook {
     void onResult(String string);
   }
 
+  public interface AvailabilityListener {
+    void onAvailable(String string);
+  }
+
   public static void setApplicationInstance(GlassBookApp applicationInstance) {
     app = applicationInstance;
   }
@@ -118,7 +122,7 @@ public class GlassBook {
     });
   }
 
-  public static void checkAvailability(int room, int date, final RequestListener listener) {
+  public static void checkAvailability(int room, int date, final AvailabilityListener listener) {
     OkHttpClient client = app.getClient();
     RequestBody formBody = new FormBody.Builder().add("n", Integer.toString(room))
             .add("o", Integer.toString(0))
@@ -137,7 +141,7 @@ public class GlassBook {
       @Override
       public void onResponse(Call call, Response response) throws IOException {
         if (response.isSuccessful()) {
-          listener.onResult(response.body().string());
+          listener.onAvailable(response.body().string());
         }
       }
     });

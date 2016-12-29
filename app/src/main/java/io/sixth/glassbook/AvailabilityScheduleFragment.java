@@ -32,7 +32,7 @@ import org.jsoup.select.Elements;
 public class AvailabilityScheduleFragment extends Fragment
     implements View.OnClickListener, TimePickerDialog.OnTimeSetListener,
     DatePickerDialog.OnDateSetListener, GlassBook.RequestListener,
-    AdapterView.OnItemSelectedListener {
+    AdapterView.OnItemSelectedListener, GlassBook.AvailabilityListener {
 
   public static String USER = "user";
   public static String CACHE = "cache";
@@ -131,6 +131,10 @@ public class AvailabilityScheduleFragment extends Fragment
     });
   }
 
+  @Override public void onAvailable(String string) {
+    Snackbar.make(rootView, string, Snackbar.LENGTH_LONG).show();
+  }
+
   @Override public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
     roomNumber = position + 1;
   }
@@ -138,4 +142,5 @@ public class AvailabilityScheduleFragment extends Fragment
   @Override public void onNothingSelected(AdapterView<?> parent) {
 
   }
+
 }
