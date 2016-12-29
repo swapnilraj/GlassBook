@@ -36,12 +36,9 @@ public class MainActivity extends AppCompatActivity implements LoginManager {
   }
 
   @Override public void onLogin(@NonNull final User user) {
-    runOnUiThread(new Runnable() {
-      @Override public void run() {
-        GlassBookApp app = (GlassBookApp) getApplication();
-        app.setUser(user);
-      }
-    });
+
+    GlassBookApp app = (GlassBookApp) getApplication();
+    app.setUser(user);
 
     Fragment fragment = new AvailabilityScheduleFragment();
     final Bundle bundle = new Bundle();
