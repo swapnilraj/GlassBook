@@ -24,13 +24,13 @@ public class MainActivity extends AppCompatActivity implements LoginManager {
 
     GlassBookApp app = (GlassBookApp) getApplication();
     User user = app.getUser();
-    cache = app.getAvavailibilityCache();
+    cache = app.getAvailabilityCache();
     Fragment fragment;
 
     if (cache == null) {
       cache = new AvailabilityCache();
       cache.update();
-      app.setAvailibilityCache(cache);
+      app.setAvailabilityCache(cache);
     }
 
     if (user == null) {

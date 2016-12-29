@@ -7,6 +7,7 @@ import com.facebook.stetho.okhttp3.StethoInterceptor;
 import io.realm.Realm;
 import io.sixth.glassbook.data.api.GlassBook;
 import io.sixth.glassbook.data.local.User;
+import io.sixth.glassbook.data.local.AvailabilityCache;
 import okhttp3.OkHttpClient;
 
 /**
@@ -31,12 +32,31 @@ public class GlassBookApp extends Application {
     }
   }
 
+  public AvailabilityCache getAvailabilityCache() {
+    Realm realm = Realm.getDefaultInstance();
+    try {
+      return realm.where(AvailabilityCache.class).findAll().first();
+    } catch (IndexOutOfBoundsException exception) {
+      return null;
+    }
+  }
+
   public void setUser(@NonNull final User user) {
     Realm
         .getDefaultInstance()
         .executeTransactionAsync(new Realm.Transaction() {
           @Override public void execute(final Realm realm) {
             realm.copyToRealm(user);
+          }
+        });
+  }
+
+  public void setAvailabilityCache(@NonNull final AvailabilityCache cache) {
+    Realm
+        .getDefaultInstance()
+        .executeTransactionAsync(new Realm.Transaction() {
+          @Override public void execute(final Realm realm) {
+            realm.copyToRealm(cache);
           }
         });
   }
