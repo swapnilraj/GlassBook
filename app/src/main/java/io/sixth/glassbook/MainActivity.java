@@ -29,7 +29,6 @@ public class MainActivity extends AppCompatActivity implements LoginManager {
 
     if (cache == null) {
       cache = new AvailabilityCache();
-      cache.update();
       app.setAvailabilityCache(cache);
     }
 

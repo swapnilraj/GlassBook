@@ -73,7 +73,6 @@ public class AvailabilityScheduleFragment extends Fragment
 
     cache = getArguments().getParcelable(CACHE);
     cache.update();
-    mResponse.setText(cache.availabilityList);
     return rootView;
   }
 

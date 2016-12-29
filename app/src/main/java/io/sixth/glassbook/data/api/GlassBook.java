@@ -28,7 +28,7 @@ import org.jsoup.select.Elements;
 public class GlassBook {
 
   final private static String BASE_URL = "https://www.scss.tcd.ie/cgi-bin/webcal/sgmr";
-  final private static String availibilityURL = "https://glassrooms.zach.ie/get.php";
+  final private static String availibilityURL = "https://glassrooms.zach.ie/get.php\\?n\\=%d\\&o\\%d";
 
   private static GlassBookApp app;
 
@@ -122,14 +122,11 @@ public class GlassBook {
     });
   }
 
-  public static void checkAvailability(int room, int date, final AvailabilityListener listener) {
+  public static String checkAvailability(int room, int date) {
     OkHttpClient client = app.getClient();
-    RequestBody formBody = new FormBody.Builder().add("n", Integer.toString(room))
-            .add("o", Integer.toString(0))
-            .build();
-
-    Request request = new Request.Builder().url(availibilityURL)
-            .post(formBody)
+    String url = String.format(availibilityURL, room, date);
+    final String[] json = new String[1];
+    Request request = new Request.Builder().url(url)
             .build();
 
     client.newCall(request).enqueue(new Callback() {
@@ -141,10 +138,11 @@ public class GlassBook {
       @Override
       public void onResponse(Call call, Response response) throws IOException {
         if (response.isSuccessful()) {
-          listener.onAvailable(response.body().string());
+          json[0] = response.body().string();
         }
       }
     });
+    return json[0];
   }
 }
 

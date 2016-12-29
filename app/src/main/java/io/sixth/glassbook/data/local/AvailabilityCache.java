@@ -18,8 +18,8 @@ import java.util.Scanner;
 
 public class AvailabilityCache extends RealmObject implements Parcelable, GlassBook.AvailabilityListener {
 
-    public String availabilityList = "";
-    public long lastUpdate;
+    private String availabilityList = "";
+    private long lastUpdate;
 
     public AvailabilityCache() {
     }
@@ -35,7 +35,9 @@ public class AvailabilityCache extends RealmObject implements Parcelable, GlassB
         this.availabilityList = "";
         //if (rightNow.getTimeInMillis() - lastUpdate > 300000) {
         for (int currentRoom = 1; currentRoom <= 9; currentRoom++) {
-            GlassBook.checkAvailability(currentRoom, 0, this);
+            String response = GlassBook.checkAvailability(currentRoom, 0);
+            if (response != null)
+                this.availabilityList += response;
         }
         lastUpdate = rightNow.getTimeInMillis();
         //}
