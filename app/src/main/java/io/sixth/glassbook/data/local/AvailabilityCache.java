@@ -25,24 +25,24 @@ public class AvailabilityCache extends RealmObject implements Parcelable, GlassB
     }
 
     public void onResult(String response) {
-        this.availabilityList += ((response.equals(""))? "fuck\n" + response : response );
+        this.availabilityList += ((response.equals(""))? "\n" + response : response );
     }
 
     public void update() {
-        runOnUIThread() {
-            Realm realm = Realm.getDefaultInstance();
-            realm.beginTransaction();
-            Calendar rightNow = Calendar.getInstance();
-            this.availabilityList = "";
-            //if (rightNow.getTimeInMillis() - lastUpdate > 300000) {
-            for (int currentRoom = 1; currentRoom <= 9; currentRoom++) {
-                GlassBook.checkAvailability(currentRoom, 0, this);
-            }
-            lastUpdate = rightNow.getTimeInMillis();
-            //}
-            realm.commitTransaction();
+        Realm realm = Realm.getDefaultInstance();
+        realm.beginTransaction();
+        Calendar rightNow = Calendar.getInstance();
+        this.availabilityList = "";
+        //if (rightNow.getTimeInMillis() - lastUpdate > 300000) {
+        for (int currentRoom = 1; currentRoom <= 9; currentRoom++) {
+            GlassBook.checkAvailability(currentRoom, 0, this);
         }
+        lastUpdate = rightNow.getTimeInMillis();
+        //}
+        realm.commitTransaction();
     }
+
+
 
     public boolean roomIsFree(int room, int time) {
         update();

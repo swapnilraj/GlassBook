@@ -32,12 +32,9 @@ public class GlassBook {
 
   private static GlassBookApp app;
 
-  private static OkHttpClient getClient() {
-    return new OkHttpClient.Builder().addNetworkInterceptor(new StethoInterceptor()).build();
-  }
-
   public interface AuthListener {
-    void onResult(User user);
+    void onLoginSuccess(User user);
+    void onLoginFail(Response response);
   }
 
   public interface RequestListener {
@@ -53,7 +50,7 @@ public class GlassBook {
 
     final String selector = "body > h1";
     String authURL = BASE_URL + "/sgmr1.cancel.pl";
-    OkHttpClient client = getClient();
+    OkHttpClient client = app.getClient();
 
     final Request request = new Request.Builder().url(authURL)
         .header("Authorization", Credentials.basic(username, password))
@@ -78,7 +75,9 @@ public class GlassBook {
           user.setUsername(username);
           user.setPassword(password);
 
-          listener.onResult(user);
+          listener.onLoginSuccess(user);
+        } else {
+          listener.onLoginFail(response);
         }
       }
     });
@@ -87,7 +86,7 @@ public class GlassBook {
   public static void bookRoom(Calendar startTime, final int roomNumber,
       final RequestListener listener) {
     String requestURL = BASE_URL + String.format(Locale.ENGLISH, "/sgmr%d.request.pl", roomNumber);
-    OkHttpClient client = getClient();
+    OkHttpClient client = app.getClient();
 
     User user = app.getUser();
 
@@ -120,7 +119,7 @@ public class GlassBook {
   }
 
   public static void checkAvailability(int room, int date, final RequestListener listener) {
-    OkHttpClient client = getClient();
+    OkHttpClient client = app.getClient();
     RequestBody formBody = new FormBody.Builder().add("n", Integer.toString(room))
             .add("o", Integer.toString(0))
             .build();
