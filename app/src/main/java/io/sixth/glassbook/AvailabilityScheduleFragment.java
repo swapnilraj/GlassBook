@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 import com.wdullaer.materialdatetimepicker.time.TimePickerDialog;
 import io.sixth.glassbook.data.api.GlassBook;
+import io.sixth.glassbook.data.local.AvailabilityCache;
 import io.sixth.glassbook.data.local.User;
 import io.sixth.glassbook.utils.FragmentUtils;
 import io.sixth.glassbook.utils.MyDatePickerDialog;
@@ -22,6 +23,7 @@ import java.util.Calendar;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
+
 
 /**
  * Created by thawne on 26/12/16.
@@ -33,11 +35,13 @@ public class AvailabilityScheduleFragment extends Fragment
     AdapterView.OnItemSelectedListener {
 
   public static String USER = "user";
+  public static String CACHE = "cache";
   private TextView greeting;
   private TextView mResponse;
   private Calendar startTime;
   private View rootView;
   private User user;
+  private AvailabilityCache cache;
   private int roomNumber = 1;
 
   public AvailabilityScheduleFragment() {
@@ -67,6 +71,9 @@ public class AvailabilityScheduleFragment extends Fragment
     String name = user.getFirstName();
     greeting.append(" " + name);
 
+    cache = getArguments().getParcelable(CACHE);
+    cache.update();
+    mResponse.setText(cache.availabilityList);
     return rootView;
   }
 

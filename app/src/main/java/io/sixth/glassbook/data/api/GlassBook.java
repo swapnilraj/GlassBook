@@ -2,6 +2,8 @@ package io.sixth.glassbook.data.api;
 
 import android.support.design.widget.Snackbar;
 import com.facebook.stetho.okhttp3.StethoInterceptor;
+
+import io.sixth.glassbook.R;
 import io.sixth.glassbook.data.local.User;
 import io.sixth.glassbook.utils.GlassBookApp;
 import java.io.IOException;
@@ -26,6 +28,8 @@ import org.jsoup.select.Elements;
 public class GlassBook {
 
   final private static String BASE_URL = "https://www.scss.tcd.ie/cgi-bin/webcal/sgmr";
+  final private static String availibilityURL = "https://glassrooms.zach.ie/get.php";
+
   private static GlassBookApp app;
 
   private static OkHttpClient getClient() {
@@ -108,6 +112,31 @@ public class GlassBook {
       }
 
       @Override public void onResponse(Call call, Response response) throws IOException {
+        if (response.isSuccessful()) {
+          listener.onResult(response.body().string());
+        }
+      }
+    });
+  }
+
+  public static void checkAvailability(int room, int date, final RequestListener listener) {
+    OkHttpClient client = getClient();
+    RequestBody formBody = new FormBody.Builder().add("n", Integer.toString(room))
+            .add("o", Integer.toString(0))
+            .build();
+
+    Request request = new Request.Builder().url(availibilityURL)
+            .post(formBody)
+            .build();
+
+    client.newCall(request).enqueue(new Callback() {
+      @Override
+      public void onFailure(Call call, IOException e) {
+        e.printStackTrace();
+      }
+
+      @Override
+      public void onResponse(Call call, Response response) throws IOException {
         if (response.isSuccessful()) {
           listener.onResult(response.body().string());
         }

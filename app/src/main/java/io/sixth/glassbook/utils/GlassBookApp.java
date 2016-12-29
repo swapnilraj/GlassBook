@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import com.facebook.stetho.Stetho;
 import io.realm.Realm;
 import io.sixth.glassbook.data.api.GlassBook;
+import io.sixth.glassbook.data.local.AvailabilityCache;
 import io.sixth.glassbook.data.local.User;
 
 /**
@@ -29,6 +30,15 @@ public class GlassBookApp extends Application {
     }
   }
 
+  public AvailabilityCache getAvavailibilityCache() {
+    Realm realm = Realm.getDefaultInstance();
+    try {
+      return realm.where(AvailabilityCache.class).findAll().first();
+    } catch (IndexOutOfBoundsException exception) {
+      return null;
+    }
+  }
+
   public void setUser(@NonNull final User user) {
     Realm
         .getDefaultInstance()
@@ -37,5 +47,15 @@ public class GlassBookApp extends Application {
             realm.copyToRealm(user);
           }
         });
+  }
+
+  public void setAvailibilityCache(@NonNull final AvailabilityCache cache) {
+    Realm
+            .getDefaultInstance()
+            .executeTransactionAsync(new Realm.Transaction() {
+              @Override public void execute(final Realm realm) {
+                realm.copyToRealm(cache);
+              }
+            });
   }
 }

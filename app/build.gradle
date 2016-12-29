@@ -35,5 +35,6 @@ dependencies {
   compile 'com.squareup.okio:okio:1.11.0'
   compile 'org.jsoup:jsoup:1.10.1'
   compile 'com.wdullaer:materialdatetimepicker:3.0.0'
+  compile 'com.google.code.gson:gson:2.6.2'
   testCompile 'junit:junit:4.12'
 }
