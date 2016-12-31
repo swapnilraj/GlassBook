@@ -23,19 +23,21 @@ public class AvailabilityCache extends RealmObject implements Parcelable {
 
     public AvailabilityCache() {
     }
-    
-    public void update() {
+
+    public static void update() {
         Realm realm = Realm.getDefaultInstance();
+        AvailabilityCache cache = realm.where(AvailabilityCache.class).findAll().first();
         realm.beginTransaction();
         Calendar rightNow = Calendar.getInstance();
-        this.availabilityList = "";
+
+        cache.availabilityList = "";
         //if (rightNow.getTimeInMillis() - lastUpdate > 300000) {
         for (int currentRoom = 1; currentRoom <= 9; currentRoom++) {
             String response = GlassBook.checkAvailability(currentRoom, 0);
             if (response != null)
-                this.availabilityList += response;
+                cache.availabilityList += response;
         }
-        lastUpdate = rightNow.getTimeInMillis();
+        cache.lastUpdate = rightNow.getTimeInMillis();
         //}
         realm.commitTransaction();
     }

@@ -16,7 +16,6 @@ import io.sixth.glassbook.utils.GlassBookApp;
  */
 
 public class MainActivity extends AppCompatActivity implements LoginManager {
-  private AvailabilityCache cache;
 
   @Override public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -24,7 +23,7 @@ public class MainActivity extends AppCompatActivity implements LoginManager {
 
     GlassBookApp app = (GlassBookApp) getApplication();
     User user = app.getUser();
-    cache = app.getAvailabilityCache();
+    AvailabilityCache cache = app.getAvailabilityCache();
     Fragment fragment;
 
     if (cache == null) {
@@ -37,7 +36,6 @@ public class MainActivity extends AppCompatActivity implements LoginManager {
     } else {
       final Bundle bundle = new Bundle();
       bundle.putParcelable(AvailabilityScheduleFragment.USER, user);
-      bundle.putParcelable(AvailabilityScheduleFragment.CACHE, cache);
       fragment = new AvailabilityScheduleFragment();
       fragment.setArguments(bundle);
     }
@@ -52,7 +50,6 @@ public class MainActivity extends AppCompatActivity implements LoginManager {
     Fragment fragment = new AvailabilityScheduleFragment();
     final Bundle bundle = new Bundle();
     bundle.putParcelable(AvailabilityScheduleFragment.USER, user);
-    bundle.putParcelable(AvailabilityScheduleFragment.CACHE, cache);
     fragment.setArguments(bundle);
 
     ActivityUtils.loadFragment(getSupportFragmentManager(), fragment, R.id.container_main);

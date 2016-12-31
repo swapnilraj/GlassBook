@@ -35,12 +35,10 @@ public class AvailabilityScheduleFragment extends Fragment
     AdapterView.OnItemSelectedListener, GlassBook.AvailabilityListener {
 
   public static String USER = "user";
-  public static String CACHE = "cache";
   private TextView greeting;
   private TextView mResponse;
   private Calendar startTime;
   private User user;
-  private AvailabilityCache cache;
   private int roomNumber = 1;
   private View rootView;
 
@@ -71,9 +69,17 @@ public class AvailabilityScheduleFragment extends Fragment
     String name = user.getFirstName();
     greeting.append(" " + name);
 
-    cache = getArguments().getParcelable(CACHE);
-    cache.update();
+    AvailabilityCache.update();
     return rootView;
+
+
+
+
+
+
+
+
+
   }
 
   @Override public void onClick(View v) {
