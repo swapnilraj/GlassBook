@@ -1,9 +1,5 @@
 package io.sixth.glassbook.data.api;
 
-import android.support.design.widget.Snackbar;
-import com.facebook.stetho.okhttp3.StethoInterceptor;
-
-import io.sixth.glassbook.R;
 import io.sixth.glassbook.data.local.User;
 import io.sixth.glassbook.utils.GlassBookApp;
 import java.io.IOException;
@@ -28,7 +24,7 @@ import org.jsoup.select.Elements;
 public class GlassBook {
 
   final private static String BASE_URL = "https://www.scss.tcd.ie/cgi-bin/webcal/sgmr";
-  final private static String availibilityURL = "https://glassrooms.zach.ie/get.php\\?n\\=%d\\&o\\%d";
+  final private static String AVAILABILITY_URL = "https://glassrooms.zach.ie/get.php\\?n\\=%d\\&o\\%d";
 
   private static GlassBookApp app;
 
@@ -120,7 +116,7 @@ public class GlassBook {
 
   public static String checkAvailability(int room, int date) {
     OkHttpClient client = app.getClient();
-    String url = String.format(availibilityURL, room, date);
+    String url = String.format(Locale.ENGLISH, AVAILABILITY_URL, room, date);
     final String[] json = new String[1];
     Request request = new Request.Builder().url(url)
             .build();
