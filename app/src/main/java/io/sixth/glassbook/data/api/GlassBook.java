@@ -41,10 +41,6 @@ public class GlassBook {
     void onResult(String string);
   }
 
-  public interface AvailabilityListener {
-    void onAvailable(String string);
-  }
-
   public static void setApplicationInstance(GlassBookApp applicationInstance) {
     app = applicationInstance;
   }

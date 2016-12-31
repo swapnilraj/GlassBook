@@ -21,21 +21,13 @@ public class GlassBookApp extends Application {
     Realm.init(this);
     Stetho.initializeWithDefaults(this);
     GlassBook.setApplicationInstance(this);
+    AvailabilityCache.setApplicationInstance(this);
   }
 
   public User getUser() {
     Realm realm = Realm.getDefaultInstance();
     try {
       return realm.where(User.class).findAll().first();
-    } catch (IndexOutOfBoundsException exception) {
-      return null;
-    }
-  }
-
-  public AvailabilityCache getAvailabilityCache() {
-    Realm realm = Realm.getDefaultInstance();
-    try {
-      return realm.where(AvailabilityCache.class).findAll().first();
     } catch (IndexOutOfBoundsException exception) {
       return null;
     }
@@ -49,6 +41,15 @@ public class GlassBookApp extends Application {
             realm.copyToRealm(user);
           }
         });
+  }
+
+  public AvailabilityCache getAvailabilityCache() {
+    Realm realm = Realm.getDefaultInstance();
+    try {
+      return realm.where(AvailabilityCache.class).findAll().first();
+    } catch (IndexOutOfBoundsException exception) {
+      return null;
+    }
   }
 
   public void setAvailabilityCache(@NonNull final AvailabilityCache cache) {
