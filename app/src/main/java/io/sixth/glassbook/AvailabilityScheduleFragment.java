@@ -88,12 +88,9 @@ public class AvailabilityScheduleFragment extends Fragment
 //    dpd.setVersion(DatePickerDialog.Version.VERSION_2);
 //    dpd.show(getActivity().getFragmentManager(), "Datepickerdialog");
     Calendar rightNow = Calendar.getInstance();
-    for (int time = 0; time < availabilityButtons.length; time++)
-      if (availabilityButtons[time] == v) {
-        startTime = Calendar.getInstance();
-        startTime.set(Calendar.HOUR_OF_DAY, rightNow.get(Calendar.HOUR_OF_DAY) + time);
-        AvailabilityAPI.bookRoom(startTime, roomNumber, this);
-      }
+    startTime = Calendar.getInstance();
+    startTime.set(Calendar.HOUR_OF_DAY, rightNow.get(Calendar.HOUR_OF_DAY) + Integer.parseInt(v.getTag().toString()));
+    AvailabilityAPI.bookRoom(startTime, roomNumber, this);
   }
 
   @Override public void onTimeSet(TimePickerDialog view, int hourOfDay, int minute, int second) {
@@ -132,10 +129,10 @@ public class AvailabilityScheduleFragment extends Fragment
         }
         else {
           Snackbar.make(rootView, "Booking Failed", Snackbar.LENGTH_LONG).show();
-          final String selector = "body > p:nth-child(3)";
-          final Document doc = Jsoup.parse(response);
-          final Elements ele = doc.select(selector);
-          final String metaContainer = ele.text();
+//          final String selector = "body > p:nth-child(3)";
+//          final Document doc = Jsoup.parse(response);
+//          final Elements ele = doc.select(selector);
+//          final String metaContainer = ele.text();
 //          final String content =
 //              metaContainer.substring(0, metaContainer.indexOf(user.getFirstName()));
         }
@@ -162,6 +159,7 @@ public class AvailabilityScheduleFragment extends Fragment
               ((rightNow.get(Calendar.HOUR_OF_DAY) + button) % 24)));
       availabilityButtons[button].setTextAlignment(View.TEXT_ALIGNMENT_TEXT_START);
       availabilityButtons[button].setOnClickListener(this);
+      availabilityButtons[button].setTag(button);
       buttonContainer.addView(availabilityButtons[button]);
     }
   }
