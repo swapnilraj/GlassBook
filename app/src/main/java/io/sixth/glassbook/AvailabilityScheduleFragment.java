@@ -16,11 +16,15 @@ import android.widget.TextView;
 import android.widget.LinearLayout;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 import com.wdullaer.materialdatetimepicker.time.TimePickerDialog;
+
+import io.sixth.glassbook.data.api.AvailabilityAPI;
 import io.sixth.glassbook.data.api.GlassBook;
 import io.sixth.glassbook.data.local.AvailabilityCache;
 import io.sixth.glassbook.data.local.User;
 import io.sixth.glassbook.utils.FragmentUtils;
 import io.sixth.glassbook.utils.MyDatePickerDialog;
+import io.sixth.glassbook.utils.RealmManager;
+
 import java.util.Calendar;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -72,7 +76,7 @@ public class AvailabilityScheduleFragment extends Fragment
     String name = user.getFirstName();
     greeting.append(" " + name);
 
-    GlassBook.updateAvailabilityCache();
+    RealmManager.updateAvailabilityCache();
     return rootView;
   }
 
@@ -88,14 +92,14 @@ public class AvailabilityScheduleFragment extends Fragment
       if (availabilityButtons[time] == v) {
         startTime = Calendar.getInstance();
         startTime.set(Calendar.HOUR_OF_DAY, rightNow.get(Calendar.HOUR_OF_DAY) + time);
-        GlassBook.bookRoom(startTime, roomNumber, this);
+        AvailabilityAPI.bookRoom(startTime, roomNumber, this);
       }
   }
 
   @Override public void onTimeSet(TimePickerDialog view, int hourOfDay, int minute, int second) {
     startTime.set(Calendar.HOUR_OF_DAY, hourOfDay);
     Snackbar.make(rootView, R.string.request_booking, Snackbar.LENGTH_LONG).show();
-    GlassBook.bookRoom(startTime, roomNumber, this);
+    AvailabilityAPI.bookRoom(startTime, roomNumber, this);
   }
 
   @Override

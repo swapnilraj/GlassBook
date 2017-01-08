@@ -1,18 +1,14 @@
 package io.sixth.glassbook.data.api;
 
-import io.sixth.glassbook.data.local.AvailabilityCache;
 import io.sixth.glassbook.data.local.User;
 import io.sixth.glassbook.utils.GlassBookApp;
 import java.io.IOException;
-import java.util.Calendar;
-import java.util.Locale;
+
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Credentials;
-import okhttp3.FormBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
-import okhttp3.RequestBody;
 import okhttp3.Response;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -25,7 +21,6 @@ import org.jsoup.select.Elements;
 public class GlassBook {
 
   final private static String BASE_URL = "https://www.scss.tcd.ie/cgi-bin/webcal/sgmr";
-  final private static String AVAILABILITY_URL = "https://glassrooms.zach.ie/get.php\\?n\\=%d\\&o\\%d";
 
   public static GlassBookApp app;
 
@@ -48,7 +43,7 @@ public class GlassBook {
 
     final String selector = "body > h1";
     String authURL = BASE_URL + "/sgmr1.cancel.pl";
-    OkHttpClient client = app.getClient();
+    OkHttpClient client = httpClientAPI.getClient();
 
     final Request request = new Request.Builder().url(authURL)
             .header("Authorization", Credentials.basic(username, password))
@@ -81,80 +76,6 @@ public class GlassBook {
         }
       }
     });
-  }
-
-  public static void bookRoom(Calendar startTime, final int roomNumber,
-                              final RequestListener listener) {
-    String requestURL = BASE_URL + String.format(Locale.ENGLISH, "/sgmr%d.request.pl", roomNumber);
-    OkHttpClient client = app.getClient();
-
-    User user = app.getUser();
-
-    Calendar rightNow = Calendar.getInstance();
-
-    RequestBody formBody = new FormBody.Builder().add("StartTime",
-            Integer.toString(startTime.get(Calendar.HOUR_OF_DAY) + 1))
-            .add("EndTime", Integer.toString(startTime.get(Calendar.HOUR_OF_DAY) + 2))
-            .add("Fullname", user.getFirstName())
-            .add("Status", user.getStatus())
-            .add("StartDate", Integer.toString(startTime.get(Calendar.DATE)))
-            .add("StartMonth", Integer.toString(startTime.get(Calendar.MONTH) + 1))
-            .add("StartYear", Integer.toString(startTime.get(Calendar.YEAR)
-                    - rightNow.get(Calendar.YEAR) + 1))
-            .build();
-
-    Request request = new Request.Builder().url(requestURL)
-            .header("Authorization", Credentials.basic(user.getUsername(), user.getPassword()))
-            .post(formBody)
-            .build();
-
-    client.newCall(request).enqueue(new Callback() {
-      @Override
-      public void onFailure(Call call, IOException e) {
-        e.printStackTrace();
-      }
-
-      @Override
-      public void onResponse(Call call, Response response) throws IOException {
-        if (response.isSuccessful()) {
-          listener.onResult(response.body().string());
-        }
-      }
-    });
-  }
-
-  public static String checkAvailability(int room, int date) {
-    OkHttpClient client = app.getClient();
-    String url = String.format(Locale.ENGLISH, AVAILABILITY_URL, room, date);
-    final String[] json = new String[1];
-    Request request = new Request.Builder().url(url)
-            .build();
-
-    client.newCall(request).enqueue(new Callback() {
-      @Override
-      public void onFailure(Call call, IOException e) {
-        e.printStackTrace();
-      }
-
-      @Override
-      public void onResponse(Call call, Response response) throws IOException {
-        if (response.isSuccessful()) {
-          json[0] = response.body().string();
-        }
-      }
-    });
-    while (json[0] == null) ; // will cause hang
-    return json[0];
-  }
-
-  public static void updateAvailabilityCache() {
-    app.updateAvailibilityCache();
-  }
-
-  // the purpose of these remappings is to later allow the caching of several days.
-  public static boolean timeIsAvailable(int hoursFromNow) {
-    AvailabilityCache cache = app.getAvailabilityCache();
-    return cache.timeIsAvailable(hoursFromNow);
   }
 }
 

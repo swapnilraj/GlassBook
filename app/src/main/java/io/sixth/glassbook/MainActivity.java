@@ -6,10 +6,12 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
-import io.sixth.glassbook.data.local.AvailabilityCache;
+import io.sixth.glassbook.data.api.GlassBook;
 import io.sixth.glassbook.data.local.User;
 import io.sixth.glassbook.utils.ActivityUtils;
 import io.sixth.glassbook.utils.GlassBookApp;
+import io.sixth.glassbook.utils.RealmManager;
+
 
 /**
  * Created by thawne on 25/12/16.
@@ -21,8 +23,8 @@ public class MainActivity extends AppCompatActivity implements LoginManager {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
 
-    GlassBookApp app = (GlassBookApp) getApplication();
-    User user = app.getUser();
+    GlassBook.setApplicationInstance((GlassBookApp) getApplication());
+    User user = RealmManager.getUser();
     Fragment fragment;
 
     if (user == null) {
@@ -39,7 +41,7 @@ public class MainActivity extends AppCompatActivity implements LoginManager {
 
   @Override public void onLogin(@NonNull final User user) {
     GlassBookApp app = (GlassBookApp) getApplication();
-    app.setUser(user);
+    RealmManager.setUser(user);
 
     Fragment fragment = new AvailabilityScheduleFragment();
     final Bundle bundle = new Bundle();
