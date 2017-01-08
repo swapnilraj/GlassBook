@@ -77,12 +77,19 @@ public class AvailabilityScheduleFragment extends Fragment
   }
 
   @Override public void onClick(View v) {
-    Calendar now = Calendar.getInstance();
-    MyDatePickerDialog dpd =
-        MyDatePickerDialog.newInstance(this, now.get(Calendar.YEAR), now.get(Calendar.MONTH),
-            now.get(Calendar.DAY_OF_MONTH));
-    dpd.setVersion(DatePickerDialog.Version.VERSION_2);
-    dpd.show(getActivity().getFragmentManager(), "Datepickerdialog");
+//    Calendar now = Calendar.getInstance();
+//    MyDatePickerDialog dpd =
+//        MyDatePickerDialog.newInstance(this, now.get(Calendar.YEAR), now.get(Calendar.MONTH),
+//            now.get(Calendar.DAY_OF_MONTH));
+//    dpd.setVersion(DatePickerDialog.Version.VERSION_2);
+//    dpd.show(getActivity().getFragmentManager(), "Datepickerdialog");
+    Calendar rightNow = Calendar.getInstance();
+    for (int time = 0; time < availabilityButtons.length; time++)
+      if (availabilityButtons[time] == v) {
+        startTime = Calendar.getInstance();
+        startTime.set(Calendar.HOUR_OF_DAY, rightNow.get(Calendar.HOUR_OF_DAY) + time);
+        GlassBook.bookRoom(startTime, roomNumber, this);
+      }
   }
 
   @Override public void onTimeSet(TimePickerDialog view, int hourOfDay, int minute, int second) {
@@ -116,14 +123,17 @@ public class AvailabilityScheduleFragment extends Fragment
 
         if (response.contains("pending")) {
           Snackbar.make(rootView, R.string.fail, Snackbar.LENGTH_LONG).show();
-        } else {
-          final String selector = "body > p:nth-child(3)";
+        } else if (response.contains("Successful")) {
           Snackbar.make(rootView, R.string.success, Snackbar.LENGTH_LONG).show();
+        }
+        else {
+          Snackbar.make(rootView, "Booking Failed", Snackbar.LENGTH_LONG).show();
+          final String selector = "body > p:nth-child(3)";
           final Document doc = Jsoup.parse(response);
           final Elements ele = doc.select(selector);
           final String metaContainer = ele.text();
-          final String content =
-              metaContainer.substring(0, metaContainer.indexOf(user.getFirstName()));
+//          final String content =
+//              metaContainer.substring(0, metaContainer.indexOf(user.getFirstName()));
         }
       }
     });
@@ -144,6 +154,7 @@ public class AvailabilityScheduleFragment extends Fragment
       availabilityButtons[button] = new Button(GlassBook.app);
       availabilityButtons[button].setText(
               (GlassBook.timeIsAvailable(button))?"Available":"Not Available");
+      availabilityButtons[button].setOnClickListener(this);
       buttonContainer.addView(availabilityButtons[button]);
     }
   }

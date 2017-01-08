@@ -85,7 +85,7 @@ public class LoginFragment extends Fragment
 
   @Override public void onClick(View v) {
     showLoading();
-    final String username = mUsername.getText().toString();
+    final String username = mUsername.getText().toString().toLowerCase();
     final String password = mPassword.getText().toString();
 
     if (username.equals("") || password.equals("")) {

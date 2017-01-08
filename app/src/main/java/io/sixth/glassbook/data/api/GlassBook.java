@@ -90,6 +90,8 @@ public class GlassBook {
 
     User user = app.getUser();
 
+    Calendar rightNow = Calendar.getInstance();
+
     RequestBody formBody = new FormBody.Builder().add("StartTime",
             Integer.toString(startTime.get(Calendar.HOUR_OF_DAY) + 1))
             .add("EndTime", Integer.toString(startTime.get(Calendar.HOUR_OF_DAY) + 2))
@@ -97,7 +99,8 @@ public class GlassBook {
             .add("Status", user.getStatus())
             .add("StartDate", Integer.toString(startTime.get(Calendar.DATE)))
             .add("StartMonth", Integer.toString(startTime.get(Calendar.MONTH) + 1))
-            .add("StartYear", Integer.toString(startTime.get(Calendar.YEAR) - 2015))
+            .add("StartYear", Integer.toString(startTime.get(Calendar.YEAR)
+                    - rightNow.get(Calendar.YEAR) + 1))
             .build();
 
     Request request = new Request.Builder().url(requestURL)
