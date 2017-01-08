@@ -69,9 +69,7 @@ public class GlassBookApp extends Application {
     AvailabilityCache cache = getAvailabilityCache();
     realm.beginTransaction();
     cache.update();
-    System.out.print(cache.toString());
     realm.commitTransaction();
-    System.out.print(cache.toString());
   }
 
   public OkHttpClient getClient() {

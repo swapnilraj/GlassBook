@@ -63,8 +63,7 @@ public class AvailabilityScheduleFragment extends Fragment
     Button button = (Button) rootView.findViewById(R.id.buttonBook);
     button.setOnClickListener(this);
 
-    updateButtons("First");
-    updateButtons("Second");
+    updateButtons();
 
     user = getArguments().getParcelable(USER);
     if (user == null) {
@@ -137,12 +136,14 @@ public class AvailabilityScheduleFragment extends Fragment
 
   }
 
-  private void updateButtons(String input) {
+  private void updateButtons() {
     LinearLayout buttonContainer = (LinearLayout) rootView.findViewById(R.id.buttonContainer);
     for (int button = 0; button < availabilityButtons.length; button++) {
-      if (availabilityButtons[button] != null) buttonContainer.removeView(availabilityButtons[button]);
+      if (availabilityButtons[button] != null)
+        buttonContainer.removeView(availabilityButtons[button]);
       availabilityButtons[button] = new Button(GlassBook.app);
-      availabilityButtons[button].setText(input + " " + button);
+      availabilityButtons[button].setText(
+              (GlassBook.timeIsAvailable(button))?"Available":"Not Available");
       buttonContainer.addView(availabilityButtons[button]);
     }
   }
