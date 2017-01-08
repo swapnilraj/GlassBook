@@ -48,7 +48,9 @@ public class GlassBookApp extends Application {
     try {
       return realm.where(AvailabilityCache.class).findAll().first();
     } catch (IndexOutOfBoundsException exception) {
-      return null;
+      AvailabilityCache cache = new AvailabilityCache();
+      setAvailabilityCache(cache);
+      return cache;
     }
   }
 
@@ -60,6 +62,10 @@ public class GlassBookApp extends Application {
             realm.copyToRealm(cache);
           }
         });
+  }
+
+  public void updateAvailibilityCache() {
+    Realm realm = Realm.getDefaultInstance();
   }
 
   public OkHttpClient getClient() {
