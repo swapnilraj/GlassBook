@@ -134,7 +134,12 @@ public class GlassBook {
         }
       }
     });
+    while (json[0] == null); // will cause hang
     return json[0];
+  }
+
+  public static void updateAvailabilityCache() {
+    app.updateAvailibilityCache();
   }
 }
 

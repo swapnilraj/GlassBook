@@ -5,7 +5,6 @@ import android.os.Parcelable;
 
 import com.google.gson.Gson;
 
-import io.realm.Realm;
 import io.realm.RealmObject;
 import io.realm.annotations.Ignore;
 import io.sixth.glassbook.data.api.GlassBook;
@@ -20,8 +19,8 @@ import java.util.Scanner;
 
 public class AvailabilityCache extends RealmObject implements Parcelable {
 
-  private String availabilityList = "";
-  private long lastUpdate;
+  private String availabilityList = " ";
+  private long lastUpdate = 0;
 
   @Ignore private static GlassBookApp app;
 
@@ -32,21 +31,18 @@ public class AvailabilityCache extends RealmObject implements Parcelable {
     app = applicationInstance;
   }
 
-  public static void update() {
-
-    AvailabilityCache cache = new AvailabilityCache();
+  public void update() {
     Calendar rightNow = Calendar.getInstance();
 
-    cache.availabilityList = "";
+    this.availabilityList = "[";
 
     for (int currentRoom = 1; currentRoom <= 9; currentRoom++) {
       String response = GlassBook.checkAvailability(currentRoom, 0);
-      if (response != null)
-        cache.availabilityList += response;
-    }
-    cache.lastUpdate = rightNow.getTimeInMillis();
 
-    app.setAvailabilityCache(cache);
+      this.availabilityList += response + ",\n";
+    }
+    this.availabilityList += "]";
+    this.lastUpdate = rightNow.getTimeInMillis();
   }
 
   public boolean roomIsFree(int room, int time) {
@@ -76,12 +72,12 @@ public class AvailabilityCache extends RealmObject implements Parcelable {
     this.lastUpdate = in.readLong();
   }
 
-  public static final Parcelable.Creator<User> CREATOR = new Parcelable.Creator<User>() {
-    @Override public User createFromParcel(Parcel source) {
-          return new User(source);
+  public static final Parcelable.Creator<AvailabilityCache> CREATOR = new Parcelable.Creator<AvailabilityCache>() {
+    @Override public AvailabilityCache createFromParcel(Parcel source) {
+          return new AvailabilityCache(source);
       }
-    @Override public User[] newArray(int size) {
-          return new User[size];
+    @Override public AvailabilityCache[] newArray(int size) {
+          return new AvailabilityCache[size];
       }
   };
 

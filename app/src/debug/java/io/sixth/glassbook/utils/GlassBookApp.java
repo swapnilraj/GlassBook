@@ -66,6 +66,12 @@ public class GlassBookApp extends Application {
 
   public void updateAvailibilityCache() {
     Realm realm = Realm.getDefaultInstance();
+    AvailabilityCache cache = getAvailabilityCache();
+    realm.beginTransaction();
+    cache.update();
+    System.out.print(cache.toString());
+    realm.commitTransaction();
+    System.out.print(cache.toString());
   }
 
   public OkHttpClient getClient() {

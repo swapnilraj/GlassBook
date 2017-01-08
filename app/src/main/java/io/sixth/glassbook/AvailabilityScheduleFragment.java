@@ -73,7 +73,7 @@ public class AvailabilityScheduleFragment extends Fragment
     String name = user.getFirstName();
     greeting.append(" " + name);
 
-    AvailabilityCache.update();
+    GlassBook.updateAvailabilityCache();
     return rootView;
   }
 
