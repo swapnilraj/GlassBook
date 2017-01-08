@@ -10,6 +10,7 @@
   <string name="loading">Loading</string>
   <string name="error_unauth">Unauthorized</string>
   <string name="request_booking">Creating Booking</string>
+  <string name="time_stamp">%02d:00</string>
   <string-array name="rooms">
     <item>Room 1</item>
     <item>Room 2</item>

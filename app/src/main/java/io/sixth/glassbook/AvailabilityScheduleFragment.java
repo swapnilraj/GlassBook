@@ -148,12 +148,15 @@ public class AvailabilityScheduleFragment extends Fragment
 
   private void updateButtons() {
     LinearLayout buttonContainer = (LinearLayout) rootView.findViewById(R.id.buttonContainer);
+    Calendar rightNow = Calendar.getInstance();
     for (int button = 0; button < availabilityButtons.length; button++) {
       if (availabilityButtons[button] != null)
         buttonContainer.removeView(availabilityButtons[button]);
       availabilityButtons[button] = new Button(GlassBook.app);
-      availabilityButtons[button].setText(
-              (GlassBook.timeIsAvailable(button))?"Available":"Not Available");
+      availabilityButtons[button].setText(String.format(
+              getResources().getString(R.string.time_stamp),
+              ((rightNow.get(Calendar.HOUR_OF_DAY) + button) % 24)));
+      availabilityButtons[button].setTextAlignment(View.TEXT_ALIGNMENT_TEXT_START);
       availabilityButtons[button].setOnClickListener(this);
       buttonContainer.addView(availabilityButtons[button]);
     }
