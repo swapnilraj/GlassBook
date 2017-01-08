@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.ScrollingView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.LinearLayout;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 import com.wdullaer.materialdatetimepicker.time.TimePickerDialog;
 import io.sixth.glassbook.data.api.GlassBook;
@@ -36,11 +38,11 @@ public class AvailabilityScheduleFragment extends Fragment
 
   public static String USER = "user";
   private TextView greeting;
-  private TextView mResponse;
   private Calendar startTime;
   private User user;
   private int roomNumber = 1;
   private View rootView;
+  private Button[] availabilityButtons = new Button[24];
 
   public AvailabilityScheduleFragment() {
   }
@@ -58,9 +60,11 @@ public class AvailabilityScheduleFragment extends Fragment
     spinner.setOnItemSelectedListener(this);
 
     greeting = (TextView) rootView.findViewById(R.id.greetingText);
-    mResponse = (TextView) rootView.findViewById(R.id.responseText);
     Button button = (Button) rootView.findViewById(R.id.buttonBook);
     button.setOnClickListener(this);
+
+    updateButtons("First");
+    updateButtons("Second");
 
     user = getArguments().getParcelable(USER);
     if (user == null) {
@@ -121,7 +125,6 @@ public class AvailabilityScheduleFragment extends Fragment
           final String metaContainer = ele.text();
           final String content =
               metaContainer.substring(0, metaContainer.indexOf(user.getFirstName()));
-          mResponse.setText(content);
         }
       }
     });
@@ -130,9 +133,18 @@ public class AvailabilityScheduleFragment extends Fragment
   @Override public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
     roomNumber = position + 1;
   }
-
   @Override public void onNothingSelected(AdapterView<?> parent) {
 
+  }
+
+  private void updateButtons(String input) {
+    LinearLayout buttonContainer = (LinearLayout) rootView.findViewById(R.id.buttonContainer);
+    for (int button = 0; button < availabilityButtons.length; button++) {
+      if (availabilityButtons[button] != null) buttonContainer.removeView(availabilityButtons[button]);
+      availabilityButtons[button] = new Button(GlassBook.app);
+      availabilityButtons[button].setText(input + " " + button);
+      buttonContainer.addView(availabilityButtons[button]);
+    }
   }
 
 }

@@ -26,7 +26,7 @@ public class GlassBook {
   final private static String BASE_URL = "https://www.scss.tcd.ie/cgi-bin/webcal/sgmr";
   final private static String AVAILABILITY_URL = "https://glassrooms.zach.ie/get.php\\?n\\=%d\\&o\\%d";
 
-  private static GlassBookApp app;
+  public static GlassBookApp app;
 
   public interface AuthListener {
     void onLoginSuccess(User user);

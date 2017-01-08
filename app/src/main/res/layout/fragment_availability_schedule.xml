@@ -17,12 +17,14 @@
       android:layout_width="match_parent"
       android:layout_height="match_parent"
       android:layout_below="@id/buttonBook"
+      android:id="@+id/buttonScroller"
       >
-    <TextView
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/responseText"
-        />
+        android:orientation="vertical"
+        android:id="@+id/buttonContainer">
+    </LinearLayout>
   </ScrollView>
   <Spinner
       android:layout_width="match_parent"
