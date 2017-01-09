@@ -3,6 +3,7 @@ package io.sixth.glassbook.utils;
 import android.support.annotation.NonNull;
 
 import io.realm.Realm;
+import io.realm.RealmResults;
 import io.sixth.glassbook.data.local.AvailabilityCache;
 import io.sixth.glassbook.data.local.User;
 
@@ -31,18 +32,34 @@ public class RealmManager {
                 });
     }
 
-    public static AvailabilityCache getAvailabilityCache() {
+    public static AvailabilityCache getAvailabilityCache(int dayFromNow) {
         Realm realm = Realm.getDefaultInstance();
         try {
-            return realm.where(AvailabilityCache.class).findAll().first();
+            AvailabilityCache cache = realm.where(AvailabilityCache.class).equalTo("index", dayFromNow).findAll().first();
+            return cache;
         } catch (IndexOutOfBoundsException exception) {
-            AvailabilityCache cache = new AvailabilityCache();
+            AvailabilityCache cache = new AvailabilityCache(dayFromNow);
             setAvailabilityCache(cache);
             return cache;
         }
     }
 
-    public static void setAvailabilityCache(@NonNull final AvailabilityCache cache) {
+    public static void purgeAvailabilityCache() {
+        Realm realm = Realm.getDefaultInstance();
+        try {
+            realm.executeTransactionAsync(new Realm.Transaction() {
+                @Override
+                public void execute(Realm realm) {
+                    RealmResults<AvailabilityCache> results = realm.where(AvailabilityCache.class).findAll();
+                    results.deleteAllFromRealm();
+                }
+            });
+        } catch (IndexOutOfBoundsException ignored) {
+        }
+    }
+
+
+    private static void setAvailabilityCache(@NonNull final AvailabilityCache cache) {
         Realm
                 .getDefaultInstance()
                 .executeTransactionAsync(new Realm.Transaction() {
@@ -52,12 +69,11 @@ public class RealmManager {
                 });
     }
 
-    public static void updateAvailabilityCache() {
+    public static void updateAvailabilityCache(int daysFromNow) {
         Realm realm = Realm.getDefaultInstance();
-        AvailabilityCache cache = getAvailabilityCache();
+        AvailabilityCache cache = getAvailabilityCache(daysFromNow);
         realm.beginTransaction();
         cache.update();
         realm.commitTransaction();
     }
-
 }

@@ -24,25 +24,25 @@ public class AvailabilityAPI {
 
     final private static String BASE_URL = "https://www.scss.tcd.ie/cgi-bin/webcal/sgmr";
 
-    public boolean timeIsAvailable(int hoursFromNow, int daysFromNow) {
-        AvailabilityCache cache = RealmManager.getAvailabilityCache();
-        cache.update();
-        return cache.timeIsAvailable(hoursFromNow);
+    public static boolean isTimeAvailable(int hoursFromNow, int daysFromNow) {
+        RealmManager.updateAvailabilityCache(daysFromNow);
+        AvailabilityCache cache = RealmManager.getAvailabilityCache(daysFromNow);
+        return cache.isTimeAvailable(hoursFromNow);
     }
 
-    public boolean[] getRoomAvailablilty(int room, int hoursFromNow, int daysFromNow) {
-        AvailabilityCache cache = RealmManager.getAvailabilityCache();
-        cache.update();
+    public static boolean[] getRoomAvailablilty(int room, int hoursFromNow, int daysFromNow) {
+        RealmManager.updateAvailabilityCache(daysFromNow);
+        AvailabilityCache cache = RealmManager.getAvailabilityCache(daysFromNow);
         return new boolean[1];
     }
 
-    public boolean roomIsAvailable(int room, int hoursFromNow, int daysFromNow) {
-        AvailabilityCache cache = RealmManager.getAvailabilityCache();
-        cache.update();
+    public static boolean roomIsAvailable(int room, int hoursFromNow, int daysFromNow) {
+        RealmManager.updateAvailabilityCache(daysFromNow);
+        AvailabilityCache cache = RealmManager.getAvailabilityCache(daysFromNow);
         return cache.roomIsFree(room, hoursFromNow);
     }
 
-    public boolean roomIsFree(int room, int hoursFromNow, int daysFromNow) {
+    public static boolean roomIsFree(int room, int hoursFromNow, int daysFromNow) {
         return true;
     }
 

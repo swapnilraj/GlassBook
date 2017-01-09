@@ -4,14 +4,11 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
-import android.support.v4.view.ScrollingView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.LinearLayout;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
@@ -19,16 +16,13 @@ import com.wdullaer.materialdatetimepicker.time.TimePickerDialog;
 
 import io.sixth.glassbook.data.api.AvailabilityAPI;
 import io.sixth.glassbook.data.api.GlassBook;
-import io.sixth.glassbook.data.local.AvailabilityCache;
 import io.sixth.glassbook.data.local.User;
 import io.sixth.glassbook.utils.FragmentUtils;
-import io.sixth.glassbook.utils.MyDatePickerDialog;
 import io.sixth.glassbook.utils.RealmManager;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.select.Elements;
+import java.util.Locale;
 
 
 /**
@@ -41,12 +35,14 @@ public class AvailabilityScheduleFragment extends Fragment
     AdapterView.OnItemSelectedListener {
 
   public static String USER = "user";
+  public static String DAY_CODE = "days_from_now";
   private TextView greeting;
   private Calendar startTime;
   private User user;
   private int roomNumber = 1;
   private View rootView;
   private Button[] availabilityButtons = new Button[24];
+  public int daysFromNow;
 
   public AvailabilityScheduleFragment() {
   }
@@ -55,28 +51,36 @@ public class AvailabilityScheduleFragment extends Fragment
   public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
       @Nullable Bundle savedInstanceState) {
     rootView = inflater.inflate(R.layout.fragment_availability_schedule, null);
+//
+//    Spinner spinner = (Spinner) rootView.findViewById(R.id.spinner);
+//    ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),
+//        R.array.rooms, android.R.layout.simple_spinner_item);
+//    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//    spinner.setAdapter(adapter);
+//    spinner.setOnItemSelectedListener(this);
+//
+//    greeting = (TextView) rootView.findViewById(R.id.greetingText);
+//    Button button = (Button) rootView.findViewById(R.id.buttonBook);
+//    button.setOnClickListener(this);
+//
+//    user = getArguments().getParcelable(USER);
+//    if (user == null) {
+//      return rootView;
+//    }
+//    String name = user.getFirstName();
+//    greeting.append(" " + name);
 
-    Spinner spinner = (Spinner) rootView.findViewById(R.id.spinner);
-    ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),
-        R.array.rooms, android.R.layout.simple_spinner_item);
-    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-    spinner.setAdapter(adapter);
-    spinner.setOnItemSelectedListener(this);
+    daysFromNow = getArguments().getInt(DAY_CODE);
 
-    greeting = (TextView) rootView.findViewById(R.id.greetingText);
-    Button button = (Button) rootView.findViewById(R.id.buttonBook);
-    button.setOnClickListener(this);
+    Calendar startTime = Calendar.getInstance();
+    TextView dateView = (TextView) rootView.findViewById(R.id.date_view);
+    SimpleDateFormat format = new SimpleDateFormat("EEE MMMM d", Locale.ENGLISH);
 
+
+    startTime.add(Calendar.DATE, daysFromNow);
+    dateView.setText(format.format(startTime.getTime()).toUpperCase());
+    RealmManager.updateAvailabilityCache(daysFromNow);
     updateButtons();
-
-    user = getArguments().getParcelable(USER);
-    if (user == null) {
-      return rootView;
-    }
-    String name = user.getFirstName();
-    greeting.append(" " + name);
-
-    RealmManager.updateAvailabilityCache();
     return rootView;
   }
 
@@ -89,7 +93,7 @@ public class AvailabilityScheduleFragment extends Fragment
 //    dpd.show(getActivity().getFragmentManager(), "Datepickerdialog");
     Calendar rightNow = Calendar.getInstance();
     startTime = Calendar.getInstance();
-    startTime.set(Calendar.HOUR_OF_DAY, rightNow.get(Calendar.HOUR_OF_DAY) + Integer.parseInt(v.getTag().toString()));
+    startTime.set(Calendar.HOUR_OF_DAY, Integer.parseInt(v.getTag().toString()));
     AvailabilityAPI.bookRoom(startTime, roomNumber, this);
   }
 
@@ -147,20 +151,27 @@ public class AvailabilityScheduleFragment extends Fragment
 
   }
 
+  // move to a Realm change listener that updates the buttons as the cache does.
   private void updateButtons() {
-    LinearLayout buttonContainer = (LinearLayout) rootView.findViewById(R.id.buttonContainer);
+    LinearLayout buttonContainer = (LinearLayout) rootView.findViewById(R.id.button_container);
     Calendar rightNow = Calendar.getInstance();
+    int currentTime = ((daysFromNow == 0)?rightNow.get(Calendar.HOUR_OF_DAY):0);
+
     for (int button = 0; button < availabilityButtons.length; button++) {
+      int time = currentTime + button;
       if (availabilityButtons[button] != null)
         buttonContainer.removeView(availabilityButtons[button]);
-      availabilityButtons[button] = new Button(GlassBook.app);
-      availabilityButtons[button].setText(String.format(
-              getResources().getString(R.string.time_stamp),
-              ((rightNow.get(Calendar.HOUR_OF_DAY) + button) % 24)));
-      availabilityButtons[button].setTextAlignment(View.TEXT_ALIGNMENT_TEXT_START);
-      availabilityButtons[button].setOnClickListener(this);
-      availabilityButtons[button].setTag(button);
-      buttonContainer.addView(availabilityButtons[button]);
+      if (time < 24) {
+        availabilityButtons[button] = new Button(GlassBook.app);
+        availabilityButtons[button].setText(String.format(
+                getResources().getString(R.string.time_stamp),
+                ((time) % 24),
+                ((AvailabilityAPI.isTimeAvailable(time, daysFromNow) ? "   AVAILABLE" : " UNAVAILABLE"))));
+        availabilityButtons[button].setTextAlignment(View.TEXT_ALIGNMENT_TEXT_START);
+        availabilityButtons[button].setOnClickListener(this);
+        availabilityButtons[button].setTag(time);
+        buttonContainer.addView(availabilityButtons[button]);
+      }
     }
   }
 

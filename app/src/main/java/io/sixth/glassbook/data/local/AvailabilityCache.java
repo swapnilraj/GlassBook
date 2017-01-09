@@ -22,8 +22,11 @@ public class AvailabilityCache extends RealmObject implements Parcelable {
 
   private String availabilityList = " ";
   private long lastUpdate = 0;
+  private int index;
 
-  public AvailabilityCache() {
+  public AvailabilityCache() {}
+  public AvailabilityCache(int i) {
+    index = i;
   }
 
   public boolean isUpToDate() {
@@ -43,7 +46,7 @@ public class AvailabilityCache extends RealmObject implements Parcelable {
     Calendar rightNow = Calendar.getInstance();
     this.availabilityList = "";
     for (int currentRoom = 1; currentRoom <= 9; currentRoom++) {
-      String response = CacheUtils.checkAvailabilityFromServer(currentRoom, 0);
+      String response = CacheUtils.checkAvailabilityFromServer(currentRoom, index);
       this.availabilityList += response + ",\n";
     }
     this.lastUpdate = rightNow.getTimeInMillis();
@@ -62,23 +65,17 @@ public class AvailabilityCache extends RealmObject implements Parcelable {
     return gson.fromJson(roomData.substring(0, roomData.length() - 1), String[].class);
   }
 
-  public boolean timeIsAvailable(int hoursFromNow) {
-    Calendar rightNow = Calendar.getInstance();
-    int currentHour = rightNow.get(Calendar.HOUR_OF_DAY);
-    if (!isUpToDate()) RealmManager.updateAvailabilityCache();
+  public boolean isTimeAvailable(int hour) {
     for (int room = 0; room < 9; room++) {
       String[] roomData = getRoomsData(room);
-      if (roomData[currentHour + hoursFromNow] == null) return true;
+      if (roomData[hour] == null) return true;
     }
     return false;
   }
 
-  public boolean roomIsFree(int room, int hoursFromNow) {
-    Calendar rightNow = Calendar.getInstance();
-    int currentHour = rightNow.get(Calendar.HOUR_OF_DAY);
-    if (!isUpToDate()) RealmManager.updateAvailabilityCache();
+  public boolean roomIsFree(int room, int hour) {
     String[] roomData = getRoomsData(room);
-    return (roomData[currentHour + hoursFromNow] == null);
+    return (roomData[hour] == null);
   }
 
   @Override
@@ -90,11 +87,13 @@ public class AvailabilityCache extends RealmObject implements Parcelable {
   public void writeToParcel(Parcel dest, int flags) {
     dest.writeString(this.availabilityList);
     dest.writeLong(this.lastUpdate);
+    dest.writeInt(this.index);
   }
 
   protected AvailabilityCache(Parcel in) {
     this.availabilityList = in.readString();
     this.lastUpdate = in.readLong();
+    this.index = in.readInt();
   }
 
   public static final Parcelable.Creator<AvailabilityCache> CREATOR = new Parcelable.Creator<AvailabilityCache>() {
@@ -114,6 +113,7 @@ public class AvailabilityCache extends RealmObject implements Parcelable {
     return "AvailabilityCache{" +
             "availabilityList='" + availabilityList + '\'' +
             ", lastUpdate='" + lastUpdate + '\'' +
+            ", index='" + index + '\'' +
             '}';
   }
 }

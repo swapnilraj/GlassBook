@@ -1,45 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
 
-  <Button
-      android:text="@string/book_button"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:id="@+id/buttonBook"
-      android:layout_centerVertical="true"
-      />
+  <!--<Button-->
+      <!--android:text="@string/book_button"-->
+      <!--android:layout_width="match_parent"-->
+      <!--android:layout_height="wrap_content"-->
+      <!--android:id="@+id/buttonBook"-->
+      <!--android:layout_centerVertical="true"-->
+      <!--/>-->
 
   <ScrollView
       android:layout_width="match_parent"
       android:layout_height="match_parent"
-      android:layout_below="@id/buttonBook"
+      android:layout_weight="1"
       android:id="@+id/buttonScroller"
       >
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:id="@+id/buttonContainer">
+        android:id="@+id/button_container">
     </LinearLayout>
+
   </ScrollView>
-  <Spinner
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:id="@+id/spinner"
-      android:layout_above="@+id/buttonBook"
-      android:layout_alignParentStart="true"
-      />
+
   <TextView
-      android:text="@string/greeting"
-      android:textSize="28sp"
+      android:id="@+id/date_view"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:id="@+id/greetingText"
-      android:layout_above="@+id/spinner"
-      android:layout_alignParentStart="true"
-      />
-</RelativeLayout>
+      android:background="@color/colorPrimary"
+      android:textColor="@color/mdtp_white"
+      android:textSize="30sp"
+      android:paddingLeft="6pt"
+      android:paddingTop="4pt"
+      android:paddingBottom="4pt"/>
+
+  <!--<Spinner-->
+      <!--android:layout_width="match_parent"-->
+      <!--android:layout_height="wrap_content"-->
+      <!--android:id="@+id/spinner"-->
+      <!--android:layout_above="@+id/buttonBook"-->
+      <!--android:layout_alignParentStart="true"-->
+      <!--/>-->
+  <!--<TextView-->
+      <!--android:text="@string/greeting"-->
+      <!--android:textSize="28sp"-->
+      <!--android:layout_width="match_parent"-->
+      <!--android:layout_height="wrap_content"-->
+      <!--android:id="@+id/greetingText"-->
+      <!--android:layout_above="@+id/spinner"-->
+      <!--android:layout_alignParentStart="true"-->
+      <!--/>-->
+</LinearLayout>

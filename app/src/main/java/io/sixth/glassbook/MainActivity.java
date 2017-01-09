@@ -3,12 +3,14 @@ package io.sixth.glassbook;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
 import io.sixth.glassbook.data.api.GlassBook;
 import io.sixth.glassbook.data.local.User;
 import io.sixth.glassbook.utils.ActivityUtils;
+import io.sixth.glassbook.utils.AvailabilityPagerAdapter;
 import io.sixth.glassbook.utils.GlassBookApp;
 import io.sixth.glassbook.utils.RealmManager;
 
@@ -30,10 +32,11 @@ public class MainActivity extends AppCompatActivity implements LoginManager {
     if (user == null) {
       fragment = new LoginFragment();
     } else {
-      final Bundle bundle = new Bundle();
-      bundle.putParcelable(AvailabilityScheduleFragment.USER, user);
-      fragment = new AvailabilityScheduleFragment();
-      fragment.setArguments(bundle);
+//      final Bundle bundle = new Bundle();
+//      bundle.putParcelable(AvailabilityScheduleFragment.USER, user);
+//      fragment = new AvailabilityScheduleFragment();
+//      fragment.setArguments(bundle);
+      fragment = new SwipeFragment();
     }
 
     ActivityUtils.loadFragment(getSupportFragmentManager(), fragment, R.id.container_main);
