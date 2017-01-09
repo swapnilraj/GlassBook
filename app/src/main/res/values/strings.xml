@@ -6,7 +6,8 @@
   <string name="book_button">Book</string>
   <string name="greeting">Hello</string>
   <string name="success">Booking Successful</string>
-  <string name="fail">Booking Pending</string>
+  <string name="fail">Booking Failed</string>
+  <string name="pending">You already have an existing booking</string>
   <string name="loading">Loading</string>
   <string name="error_unauth">Unauthorized</string>
   <string name="request_booking">Creating Booking</string>

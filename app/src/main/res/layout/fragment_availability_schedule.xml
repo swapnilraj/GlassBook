@@ -4,15 +4,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-
-  <!--<Button-->
-      <!--android:text="@string/book_button"-->
-      <!--android:layout_width="match_parent"-->
-      <!--android:layout_height="wrap_content"-->
-      <!--android:id="@+id/buttonBook"-->
-      <!--android:layout_centerVertical="true"-->
-      <!--/>-->
-
   <ScrollView
       android:layout_width="match_parent"
       android:layout_height="match_parent"
@@ -39,20 +30,4 @@
       android:paddingTop="4pt"
       android:paddingBottom="4pt"/>
 
-  <!--<Spinner-->
-      <!--android:layout_width="match_parent"-->
-      <!--android:layout_height="wrap_content"-->
-      <!--android:id="@+id/spinner"-->
-      <!--android:layout_above="@+id/buttonBook"-->
-      <!--android:layout_alignParentStart="true"-->
-      <!--/>-->
-  <!--<TextView-->
-      <!--android:text="@string/greeting"-->
-      <!--android:textSize="28sp"-->
-      <!--android:layout_width="match_parent"-->
-      <!--android:layout_height="wrap_content"-->
-      <!--android:id="@+id/greetingText"-->
-      <!--android:layout_above="@+id/spinner"-->
-      <!--android:layout_alignParentStart="true"-->
-      <!--/>-->
 </LinearLayout>

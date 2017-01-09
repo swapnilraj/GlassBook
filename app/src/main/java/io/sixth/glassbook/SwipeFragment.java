@@ -14,8 +14,8 @@ import io.sixth.glassbook.utils.AvailabilityPagerAdapter;
  * Created by Jorik on 08/01/2017.
  */
 
-public class SwipeFragment extends Fragment {
-    ViewPager mViewPager;
+public class SwipeFragment extends Fragment{
+    public ViewPager mViewPager;
 
     @Nullable
     @Override
@@ -24,7 +24,13 @@ public class SwipeFragment extends Fragment {
         View view = inflater.inflate(R.layout.swipe_view, null);
 
         mViewPager = (ViewPager) view.findViewById(R.id.pager);
-        mViewPager.setAdapter(new AvailabilityPagerAdapter(getChildFragmentManager()));
+        AvailabilityPagerAdapter adapter = new AvailabilityPagerAdapter(getChildFragmentManager());
+        adapter.setParent(this);
+        mViewPager.setAdapter(adapter);
         return mViewPager;
+    }
+
+    public void gotTo(int i) {
+        this.mViewPager.setCurrentItem(i);
     }
 }

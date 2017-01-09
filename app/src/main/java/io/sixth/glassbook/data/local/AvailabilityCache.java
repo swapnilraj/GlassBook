@@ -1,15 +1,11 @@
 package io.sixth.glassbook.data.local;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import io.realm.RealmObject;
 
 import io.sixth.glassbook.utils.CacheUtils;
-import io.sixth.glassbook.utils.RealmManager;
 
 import java.util.Calendar;
 import java.util.Scanner;
@@ -18,7 +14,7 @@ import java.util.Scanner;
  * Created by Jorik on 28/12/16.
  */
 
-public class AvailabilityCache extends RealmObject implements Parcelable {
+public class AvailabilityCache extends RealmObject{
 
   private String availabilityList = " ";
   private long lastUpdate = 0;
@@ -77,36 +73,6 @@ public class AvailabilityCache extends RealmObject implements Parcelable {
     String[] roomData = getRoomsData(room);
     return (roomData[hour] == null);
   }
-
-  @Override
-  public int describeContents() {
-    return 0;
-  }
-
-  @Override
-  public void writeToParcel(Parcel dest, int flags) {
-    dest.writeString(this.availabilityList);
-    dest.writeLong(this.lastUpdate);
-    dest.writeInt(this.index);
-  }
-
-  protected AvailabilityCache(Parcel in) {
-    this.availabilityList = in.readString();
-    this.lastUpdate = in.readLong();
-    this.index = in.readInt();
-  }
-
-  public static final Parcelable.Creator<AvailabilityCache> CREATOR = new Parcelable.Creator<AvailabilityCache>() {
-    @Override
-    public AvailabilityCache createFromParcel(Parcel source) {
-      return new AvailabilityCache(source);
-    }
-
-    @Override
-    public AvailabilityCache[] newArray(int size) {
-      return new AvailabilityCache[size];
-    }
-  };
 
   @Override
   public String toString() {

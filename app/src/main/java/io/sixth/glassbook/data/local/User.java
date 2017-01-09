@@ -1,14 +1,12 @@
 package io.sixth.glassbook.data.local;
 
-import android.os.Parcel;
-import android.os.Parcelable;
 import io.realm.RealmObject;
 
 /**
  * Created by thawne on 26/12/16.
  */
 
-public class User extends RealmObject implements Parcelable {
+public class User extends RealmObject {
 
   public User() {}
 
@@ -57,36 +55,6 @@ public class User extends RealmObject implements Parcelable {
   public void setPassword(String password) {
     this.password = password;
   }
-
-  @Override public int describeContents() {
-    return 0;
-  }
-
-  @Override public void writeToParcel(Parcel dest, int flags) {
-    dest.writeString(this.firstName);
-    dest.writeString(this.lastName);
-    dest.writeString(this.status);
-    dest.writeString(this.username);
-    dest.writeString(this.password);
-  }
-
-  protected User(Parcel in) {
-    this.firstName = in.readString();
-    this.lastName = in.readString();
-    this.status = in.readString();
-    this.username = in.readString();
-    this.password = in.readString();
-  }
-
-  public static final Parcelable.Creator<User> CREATOR = new Parcelable.Creator<User>() {
-    @Override public User createFromParcel(Parcel source) {
-      return new User(source);
-    }
-
-    @Override public User[] newArray(int size) {
-      return new User[size];
-    }
-  };
 
   @Override public String toString() {
     return "User{" +
