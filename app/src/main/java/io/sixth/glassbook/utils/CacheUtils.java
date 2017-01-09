@@ -41,4 +41,16 @@ public class CacheUtils {
         while (json[0] == null) ; // will cause hang
         return json[0];
     }
+
+    public static String dummyServer() {
+        return "[\"a\", null, \"b\", null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null],\n" +
+                "[\"a\", null, \"b\", null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null],\n" +
+                "[\"a\", null, \"b\", null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null],\n" +
+                "[\"a\", null, \"b\", null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null],\n" +
+                "[\"a\", null, \"b\", null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null],\n" +
+                "[\"a\", null, \"b\", null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null],\n" +
+                "[\"a\", null, \"b\", null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null],\n" +
+                "[\"a\", null, \"b\", null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null],\n" +
+                "[\"a\", null, \"b\", null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null],";
+    }
 }

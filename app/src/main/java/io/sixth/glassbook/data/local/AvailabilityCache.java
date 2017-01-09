@@ -41,10 +41,11 @@ public class AvailabilityCache extends RealmObject{
   public void hardUpdate() {
     Calendar rightNow = Calendar.getInstance();
     this.availabilityList = "";
-    for (int currentRoom = 1; currentRoom <= 9; currentRoom++) {
-      String response = CacheUtils.checkAvailabilityFromServer(currentRoom, index);
-      this.availabilityList += response + ",\n";
-    }
+//    for (int currentRoom = 1; currentRoom <= 9; currentRoom++) {
+//      String response = CacheUtils.checkAvailabilityFromServer(currentRoom, index);
+//      this.availabilityList += response + ",\n";
+//    }
+    this.availabilityList += CacheUtils.dummyServer();
     this.lastUpdate = rightNow.getTimeInMillis();
   }
 
