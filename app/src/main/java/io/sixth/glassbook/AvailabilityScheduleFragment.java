@@ -12,10 +12,8 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.LinearLayout;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 
-import io.sixth.glassbook.data.api.AvailabilityAPI;
 import io.sixth.glassbook.data.api.GlassBook;
 import io.sixth.glassbook.utils.ActivityUtils;
 import io.sixth.glassbook.utils.FragmentUtils;

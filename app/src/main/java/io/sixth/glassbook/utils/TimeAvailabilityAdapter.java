@@ -43,6 +43,8 @@ public class TimeAvailabilityAdapter extends RecyclerView.Adapter<TimeAvailabili
     public TimeAvailabilityAdapter.ViewHolder onCreateViewHolder(ViewGroup parent,
                                                            int viewType) {
         View v = new Button(GlassBook.app);
+        v.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+
         ViewHolder vh = new ViewHolder(v);
         return vh;
     }
@@ -59,7 +61,6 @@ public class TimeAvailabilityAdapter extends RecyclerView.Adapter<TimeAvailabili
         button.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_START);
         button.setOnClickListener(listener);
         button.setTag(position);
-
     }
 
     // Return the size of your dataset (invoked by the layout manager)
