@@ -38,7 +38,6 @@ public class TimeDetailFragment extends Fragment {
         cal.add(Calendar.DATE, daysFromNow);
         cal.set(Calendar.HOUR_OF_DAY, time);
 
-
         //get list
         rootView = inflater.inflate(R.layout.time_detail, null);
         mRecyclerView = (RecyclerView) rootView.findViewById(R.id.my_recycler_view);
@@ -52,9 +51,8 @@ public class TimeDetailFragment extends Fragment {
         mRecyclerView.setLayoutManager(mLayoutManager);
 
         // specify an adapter (see also next example)
-        mAdapter = new TimeDetailAdapter(time);
+        mAdapter = new TimeDetailAdapter(time, daysFromNow);
         mRecyclerView.setAdapter(mAdapter);
-
 
         return rootView;
     }

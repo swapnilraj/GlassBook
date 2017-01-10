@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,7 +20,7 @@ import io.sixth.glassbook.data.api.GlassBook;
 import io.sixth.glassbook.utils.ActivityUtils;
 import io.sixth.glassbook.utils.FragmentUtils;
 import io.sixth.glassbook.utils.MyDatePickerDialog;
-import io.sixth.glassbook.utils.RealmManager;
+import io.sixth.glassbook.utils.TimeAvailabilityAdapter;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -37,12 +39,17 @@ public class AvailabilityScheduleFragment extends Fragment
 
   public static final String DAY_CODE = "days_from_now";
   public static final String TIME = "time";
+
   private Calendar startTime;
-  private SwipeFragment parent;
-  private int roomNumber = 1;
-  private View rootView;
-  private Button[] availabilityButtons = new Button[24];
   public int daysFromNow;
+  private int roomNumber = 1;
+
+  private SwipeFragment parent;
+  private View rootView;
+  private RecyclerView mRecyclerView;
+  private LinearLayoutManager mLayoutManager;
+  private TimeAvailabilityAdapter mAdapter;
+  private Button[] availabilityButtons = new Button[24];
 
 
   public AvailabilityScheduleFragment() {
@@ -52,21 +59,30 @@ public class AvailabilityScheduleFragment extends Fragment
   public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
       @Nullable Bundle savedInstanceState) {
     rootView = inflater.inflate(R.layout.fragment_availability_schedule, null);
-
-
     daysFromNow = getArguments().getInt(DAY_CODE);
 
+    // Build Calendar
     startTime = Calendar.getInstance();
     TextView dateView = (TextView) rootView.findViewById(R.id.date_view);
     SimpleDateFormat format = new SimpleDateFormat("EEE MMMM d", Locale.ENGLISH);
-
 
     startTime.add(Calendar.DATE, daysFromNow);
     dateView.setText(format.format(startTime.getTime()).toUpperCase());
     dateView.setOnClickListener(this);
 
-    RealmManager.updateAvailabilityCache(daysFromNow);
-    updateButtons();
+    mRecyclerView = (RecyclerView) rootView.findViewById(R.id.time_slot_recycler);
+
+    // use this setting to improve performance if you know that changes
+    // in content do not change the layout size of the RecyclerView
+    mRecyclerView.setHasFixedSize(true);
+
+    // use a linear layout manager
+    mLayoutManager = new LinearLayoutManager(this.getContext());
+    mRecyclerView.setLayoutManager(mLayoutManager);
+
+    mAdapter = new TimeAvailabilityAdapter(daysFromNow, this);
+    mRecyclerView.setAdapter(mAdapter);
+
     return rootView;
   }
 
@@ -140,28 +156,28 @@ public class AvailabilityScheduleFragment extends Fragment
   }
 
   // move to a Realm change listener that updates the buttons as the cache does.
-  private void updateButtons() {
-    LinearLayout buttonContainer = (LinearLayout) rootView.findViewById(R.id.button_container);
-    Calendar rightNow = Calendar.getInstance();
-    int currentTime = ((daysFromNow == 0)?rightNow.get(Calendar.HOUR_OF_DAY):0);
-
-    for (int button = 0; button < availabilityButtons.length; button++) {
-      int time = currentTime + button;
-      if (availabilityButtons[button] != null)
-        buttonContainer.removeView(availabilityButtons[button]);
-      if (time < 24) {
-        availabilityButtons[button] = new Button(GlassBook.app);
-        availabilityButtons[button].setText(String.format(
-                getResources().getString(R.string.time_stamp),
-                ((time) % 24),
-                ((AvailabilityAPI.isTimeAvailable(time, daysFromNow) ? "   AVAILABLE" : " UNAVAILABLE"))));
-        availabilityButtons[button].setTextAlignment(View.TEXT_ALIGNMENT_TEXT_START);
-        availabilityButtons[button].setOnClickListener(this);
-        availabilityButtons[button].setTag(time);
-        buttonContainer.addView(availabilityButtons[button]);
-      }
-    }
-  }
+//  private void updateButtons() {
+//    LinearLayout buttonContainer = (LinearLayout) rootView.findViewById(R.id.button_container);
+//    Calendar rightNow = Calendar.getInstance();
+//    int currentTime = ((daysFromNow == 0)?rightNow.get(Calendar.HOUR_OF_DAY):0);
+//
+//    for (int button = 0; button < availabilityButtons.length; button++) {
+//      int time = currentTime + button;
+//      if (availabilityButtons[button] != null)
+//        buttonContainer.removeView(availabilityButtons[button]);
+//      if (time < 24) {
+//        availabilityButtons[button] = new Button(GlassBook.app);
+//        availabilityButtons[button].setText(String.format(
+//                getResources().getString(R.string.time_stamp),
+//                ((time) % 24),
+//                ((AvailabilityAPI.isTimeAvailable(time, daysFromNow) ? "   AVAILABLE" : " UNAVAILABLE"))));
+//        availabilityButtons[button].setTextAlignment(View.TEXT_ALIGNMENT_TEXT_START);
+//        availabilityButtons[button].setOnClickListener(this);
+//        availabilityButtons[button].setTag(time);
+//        buttonContainer.addView(availabilityButtons[button]);
+//      }
+//    }
+//  }
 
   public void setParent(Fragment fragment) {
     parent = (SwipeFragment) fragment;

@@ -32,15 +32,15 @@ public class RealmManager {
                 });
     }
 
-    public static AvailabilityCache getAvailabilityCache(int dayFromNow) {
+    public static AvailabilityCache getAvailabilityCache(int daysFromNow) {
         Realm realm = Realm.getDefaultInstance();
         try {
-            AvailabilityCache cache = realm.where(AvailabilityCache.class).equalTo("index", dayFromNow).findAll().first();
+            AvailabilityCache cache = realm.where(AvailabilityCache.class).equalTo("index", daysFromNow).findAll().first();
             return cache;
         } catch (IndexOutOfBoundsException exception) {
-            AvailabilityCache cache = new AvailabilityCache(dayFromNow);
+            AvailabilityCache cache = new AvailabilityCache(daysFromNow);
             setAvailabilityCache(cache);
-            return cache;
+            return cache; //potential infinite loop
         }
     }
 
@@ -69,11 +69,12 @@ public class RealmManager {
                 });
     }
 
-    public static void updateAvailabilityCache(int daysFromNow) {
+    public static AvailabilityCache getUpdatedAvailabilityCache(int daysFromNow) {
         Realm realm = Realm.getDefaultInstance();
         AvailabilityCache cache = getAvailabilityCache(daysFromNow);
         realm.beginTransaction();
         cache.update();
         realm.commitTransaction();
+        return cache;
     }
 }

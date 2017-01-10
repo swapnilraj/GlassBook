@@ -25,20 +25,19 @@ public class AvailabilityAPI {
     final private static String BASE_URL = "https://www.scss.tcd.ie/cgi-bin/webcal/sgmr";
 
     public static boolean isTimeAvailable(int hoursFromNow, int daysFromNow) {
-        RealmManager.updateAvailabilityCache(daysFromNow);
-        AvailabilityCache cache = RealmManager.getAvailabilityCache(daysFromNow);
+        AvailabilityCache cache = RealmManager.getUpdatedAvailabilityCache(daysFromNow);
         return cache.isTimeAvailable(hoursFromNow);
     }
 
     public static boolean[] getRoomAvailablilty(int room, int hoursFromNow, int daysFromNow) {
-        RealmManager.updateAvailabilityCache(daysFromNow);
-        AvailabilityCache cache = RealmManager.getAvailabilityCache(daysFromNow);
+        AvailabilityCache cache = RealmManager.getUpdatedAvailabilityCache(daysFromNow);
+
         return new boolean[1];
     }
 
-    public static boolean roomIsAvailable(int room, int hoursFromNow, int daysFromNow) {
-        RealmManager.updateAvailabilityCache(daysFromNow);
-        AvailabilityCache cache = RealmManager.getAvailabilityCache(daysFromNow);
+    public static boolean isRoomAvailable(int room, int hoursFromNow, int daysFromNow) {
+        AvailabilityCache cache = RealmManager.getUpdatedAvailabilityCache(daysFromNow);
+
         return cache.roomIsAvailable(room, hoursFromNow);
     }
 

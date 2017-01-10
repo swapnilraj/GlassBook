@@ -7,7 +7,6 @@ import android.view.ViewGroup;
 import android.widget.Switch;
 import android.widget.TextView;
 
-import io.sixth.glassbook.MainActivity;
 import io.sixth.glassbook.R;
 import io.sixth.glassbook.data.api.AvailabilityAPI;
 
@@ -18,6 +17,7 @@ import io.sixth.glassbook.data.api.AvailabilityAPI;
 public class TimeDetailAdapter extends RecyclerView.Adapter<TimeDetailAdapter.ViewHolder> {
 
     private int parentTime;
+    private int daysFromNow;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         // each data item is just a string in this case
@@ -30,8 +30,9 @@ public class TimeDetailAdapter extends RecyclerView.Adapter<TimeDetailAdapter.Vi
     }
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public TimeDetailAdapter(int time) {
+    public TimeDetailAdapter(int time, int days) {
         parentTime = time;
+        daysFromNow = days;
     }
 
     // Create new views (invoked by the layout manager)
@@ -56,8 +57,8 @@ public class TimeDetailAdapter extends RecyclerView.Adapter<TimeDetailAdapter.Vi
         mSwitch.setChecked(false);
 
 
-        boolean firstHour = AvailabilityAPI.roomIsAvailable(position, parentTime, 0);
-        boolean secondHour = AvailabilityAPI.roomIsAvailable(position, parentTime + 1, 0);
+        boolean firstHour = AvailabilityAPI.isRoomAvailable(position, parentTime, daysFromNow);
+        boolean secondHour = AvailabilityAPI.isRoomAvailable(position, parentTime + 1, daysFromNow);
         if (!firstHour) {
             view.setBackgroundColor(view.getResources().getColor(R.color.unavailable));
             mSwitch.setVisibility(View.INVISIBLE);

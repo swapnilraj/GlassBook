@@ -4,20 +4,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-  <ScrollView
+  <android.support.v7.widget.RecyclerView
+      android:id="@+id/time_slot_recycler"
+      android:scrollbars="vertical"
       android:layout_width="match_parent"
       android:layout_height="match_parent"
       android:layout_weight="1"
-      android:id="@+id/buttonScroller"
-      >
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:id="@+id/button_container">
-    </LinearLayout>
-
-  </ScrollView>
+      />
 
   <TextView
       android:id="@+id/date_view"

@@ -26,7 +26,7 @@ public class AvailabilityCache extends RealmObject{
   }
 
   public boolean isUpToDate() {
-    return isUpToDate(0);
+    return isUpToDate(20);
   } // revert to 20
 
   public boolean isUpToDate(int expiryInMinutes) {
@@ -41,11 +41,11 @@ public class AvailabilityCache extends RealmObject{
   public void hardUpdate() {
     Calendar rightNow = Calendar.getInstance();
     this.availabilityList = "";
-//    for (int currentRoom = 1; currentRoom <= 9; currentRoom++) {
-//      String response = CacheUtils.checkAvailabilityFromServer(currentRoom, index);
-//      this.availabilityList += response + ",\n";
-//    }
-    this.availabilityList += CacheUtils.dummyServer();
+    for (int currentRoom = 1; currentRoom <= 9; currentRoom++) {
+      String response = CacheUtils.checkAvailabilityFromServer(currentRoom, index);
+      this.availabilityList += response + ",\n";
+    }
+//    this.availabilityList += CacheUtils.dummyServer();
     this.lastUpdate = rightNow.getTimeInMillis();
   }
 
