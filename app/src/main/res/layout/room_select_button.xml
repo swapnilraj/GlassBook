@@ -2,21 +2,25 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:orientation="vertical"
               android:layout_width="match_parent"
-              android:layout_height="match_parent">
+              android:layout_height="wrap_content"
+              android:layout_marginTop="1.5pt"
+              android:layout_marginBottom="1.5pt"
+    >
 
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="3pt"
-        android:padding="4pt"
-        android:background="@color/available">
+        android:padding="4pt">
 
         <TextView
+            android:text=""
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/textView4"
+            android:id="@+id/roomName"
             android:textSize="20dp"
+            android:textAllCaps="true"
+            android:textColor="@color/mdtp_white"
             android:layout_weight="1"/>
 
         <Switch

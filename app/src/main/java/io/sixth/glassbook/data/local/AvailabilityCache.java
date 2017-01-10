@@ -26,8 +26,8 @@ public class AvailabilityCache extends RealmObject{
   }
 
   public boolean isUpToDate() {
-    return isUpToDate(20);
-  }
+    return isUpToDate(0);
+  } // revert to 20
 
   public boolean isUpToDate(int expiryInMinutes) {
     Calendar rightNow = Calendar.getInstance();
@@ -51,7 +51,7 @@ public class AvailabilityCache extends RealmObject{
 
   public String[] getRoomsData(int room) {
     Scanner list = new Scanner(this.availabilityList);
-    for (int skip = 0; skip < room - 1; skip++) {
+    for (int skip = 0; skip < room; skip++) {
       if (list.hasNextLine())
         list.nextLine();
       else
@@ -70,7 +70,7 @@ public class AvailabilityCache extends RealmObject{
     return false;
   }
 
-  public boolean roomIsFree(int room, int hour) {
+  public boolean roomIsAvailable(int room, int hour) {
     String[] roomData = getRoomsData(room);
     return (roomData[hour] == null);
   }

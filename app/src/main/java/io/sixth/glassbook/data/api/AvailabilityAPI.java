@@ -39,11 +39,7 @@ public class AvailabilityAPI {
     public static boolean roomIsAvailable(int room, int hoursFromNow, int daysFromNow) {
         RealmManager.updateAvailabilityCache(daysFromNow);
         AvailabilityCache cache = RealmManager.getAvailabilityCache(daysFromNow);
-        return cache.roomIsFree(room, hoursFromNow);
-    }
-
-    public static boolean roomIsFree(int room, int hoursFromNow, int daysFromNow) {
-        return true;
+        return cache.roomIsAvailable(room, hoursFromNow);
     }
 
     public static void bookRoom(Calendar startTime, final int roomNumber,

@@ -33,6 +33,7 @@ public class MainActivity extends AppCompatActivity implements LoginManager {
       fragment = new SwipeFragment();
     }
 
+    fragment = new TimeDetailFragment();
     ActivityUtils.loadFragment(getSupportFragmentManager(), fragment, R.id.container_main);
   }
 
