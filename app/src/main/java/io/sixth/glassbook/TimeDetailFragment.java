@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
-
 import java.util.Calendar;
 
 import io.sixth.glassbook.utils.TimeDetailAdapter;
@@ -19,16 +18,28 @@ import io.sixth.glassbook.utils.TimeDetailAdapter;
  */
 
 public class TimeDetailFragment extends Fragment {
-    private Calendar timInfoCal;
+    private Calendar cal;
     private View rootView;
     private RecyclerView mRecyclerView;
     private LinearLayoutManager mLayoutManager;
     private TimeDetailAdapter mAdapter;
+
     public TimeDetailFragment() {}
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
+        // Establish time and date
+        int daysFromNow = getArguments().getInt(AvailabilityScheduleFragment.DAY_CODE);
+        int time = getArguments().getInt(AvailabilityScheduleFragment.TIME);
+
+        cal = Calendar.getInstance();
+        cal.add(Calendar.DATE, daysFromNow);
+        cal.set(Calendar.HOUR_OF_DAY, time);
+
+
+        //get list
         rootView = inflater.inflate(R.layout.time_detail, null);
         mRecyclerView = (RecyclerView) rootView.findViewById(R.id.my_recycler_view);
 
@@ -41,8 +52,9 @@ public class TimeDetailFragment extends Fragment {
         mRecyclerView.setLayoutManager(mLayoutManager);
 
         // specify an adapter (see also next example)
-        mAdapter = new TimeDetailAdapter();
+        mAdapter = new TimeDetailAdapter(time);
         mRecyclerView.setAdapter(mAdapter);
+
 
         return rootView;
     }

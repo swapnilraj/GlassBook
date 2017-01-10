@@ -19,6 +19,7 @@ import io.sixth.glassbook.utils.RealmManager;
 
 public class MainActivity extends AppCompatActivity implements LoginManager {
 
+  public Fragment swipeFragment;
   @Override public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
@@ -30,17 +31,16 @@ public class MainActivity extends AppCompatActivity implements LoginManager {
     if (user == null) {
       fragment = new LoginFragment();
     } else {
-      fragment = new SwipeFragment();
+      fragment = swipeFragment = new SwipeFragment();
     }
 
-    fragment = new TimeDetailFragment();
     ActivityUtils.loadFragment(getSupportFragmentManager(), fragment, R.id.container_main);
   }
 
   @Override public void onLogin(@NonNull final User user) {
     GlassBookApp app = (GlassBookApp) getApplication();
     RealmManager.setUser(user);
-    Fragment fragment = new SwipeFragment();
+    Fragment fragment = swipeFragment = new SwipeFragment();
     ActivityUtils.loadFragment(getSupportFragmentManager(), fragment, R.id.container_main);
   }
 

@@ -17,6 +17,8 @@ import io.sixth.glassbook.data.api.AvailabilityAPI;
 
 public class TimeDetailAdapter extends RecyclerView.Adapter<TimeDetailAdapter.ViewHolder> {
 
+    private int parentTime;
+
     public static class ViewHolder extends RecyclerView.ViewHolder {
         // each data item is just a string in this case
         public View mView;
@@ -28,7 +30,9 @@ public class TimeDetailAdapter extends RecyclerView.Adapter<TimeDetailAdapter.Vi
     }
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public TimeDetailAdapter() {}
+    public TimeDetailAdapter(int time) {
+        parentTime = time;
+    }
 
     // Create new views (invoked by the layout manager)
     @Override
@@ -45,14 +49,15 @@ public class TimeDetailAdapter extends RecyclerView.Adapter<TimeDetailAdapter.Vi
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         View view = holder.mView;
+
         TextView name = (TextView) view.findViewById(R.id.roomName);
         name.setText("Room " + position);
         Switch mSwitch = (Switch) view.findViewById(R.id.switch2);
         mSwitch.setChecked(false);
 
 
-        boolean firstHour = AvailabilityAPI.roomIsAvailable(position, 0, 0);
-        boolean secondHour = AvailabilityAPI.roomIsAvailable(position, 1, 0);
+        boolean firstHour = AvailabilityAPI.roomIsAvailable(position, parentTime, 0);
+        boolean secondHour = AvailabilityAPI.roomIsAvailable(position, parentTime + 1, 0);
         if (!firstHour) {
             view.setBackgroundColor(view.getResources().getColor(R.color.unavailable));
             mSwitch.setVisibility(View.INVISIBLE);

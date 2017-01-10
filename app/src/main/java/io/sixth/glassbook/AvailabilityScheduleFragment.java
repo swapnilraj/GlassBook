@@ -15,6 +15,7 @@ import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 
 import io.sixth.glassbook.data.api.AvailabilityAPI;
 import io.sixth.glassbook.data.api.GlassBook;
+import io.sixth.glassbook.utils.ActivityUtils;
 import io.sixth.glassbook.utils.FragmentUtils;
 import io.sixth.glassbook.utils.MyDatePickerDialog;
 import io.sixth.glassbook.utils.RealmManager;
@@ -35,6 +36,7 @@ public class AvailabilityScheduleFragment extends Fragment
     AdapterView.OnItemSelectedListener {
 
   public static final String DAY_CODE = "days_from_now";
+  public static final String TIME = "time";
   private Calendar startTime;
   private SwipeFragment parent;
   private int roomNumber = 1;
@@ -73,8 +75,14 @@ public class AvailabilityScheduleFragment extends Fragment
 //    put in an enum / switch statement?
     if (v instanceof Button) {
       startTime.set(Calendar.HOUR_OF_DAY, Integer.parseInt(v.getTag().toString()));
-      Snackbar.make(rootView, R.string.request_booking, Snackbar.LENGTH_LONG).show();
-      AvailabilityAPI.bookRoom(startTime, roomNumber, this);
+
+      Fragment fragment = new TimeDetailFragment();
+      Bundle args = new Bundle();
+      args.putInt(DAY_CODE, daysFromNow);
+      args.putInt(TIME, Integer.parseInt(v.getTag().toString()));
+      fragment.setArguments(args);
+      ActivityUtils.loadFragment(getActivity().getSupportFragmentManager(), fragment, R.id.container_main);
+
     } else if (v instanceof TextView) {
       Calendar now = Calendar.getInstance();
       MyDatePickerDialog dpd =
