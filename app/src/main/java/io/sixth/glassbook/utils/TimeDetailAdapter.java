@@ -8,6 +8,7 @@ import android.widget.Switch;
 import android.widget.TextView;
 
 import io.sixth.glassbook.R;
+import io.sixth.glassbook.TimeDetailFragment;
 import io.sixth.glassbook.data.api.AvailabilityAPI;
 
 /**
@@ -51,6 +52,7 @@ public class TimeDetailAdapter extends RecyclerView.Adapter<TimeDetailAdapter.Vi
     public void onBindViewHolder(ViewHolder holder, int position) {
         View view = holder.mView;
 
+        view.setTag(position);
         TextView name = (TextView) view.findViewById(R.id.roomName);
         name.setText("Room " + position);
         Switch mSwitch = (Switch) view.findViewById(R.id.switch2);
@@ -64,6 +66,7 @@ public class TimeDetailAdapter extends RecyclerView.Adapter<TimeDetailAdapter.Vi
             mSwitch.setVisibility(View.INVISIBLE);
         } else if (secondHour) {
             view.setBackgroundColor(view.getResources().getColor(R.color.available));
+            view.setOnClickListener(TimeDetailFragment.activeFragment);
         }  else {
             view.setBackgroundColor(view.getResources().getColor(R.color.available));
             mSwitch.setVisibility(View.INVISIBLE);
