@@ -1,6 +1,5 @@
 package io.sixth.glassbook.utils;
 
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
@@ -60,7 +59,7 @@ public class TimeAvailabilityAdapter extends RecyclerView.Adapter<TimeAvailabili
                 (AvailabilityAPI.isTimeAvailable(position + startAdjustment, daysFromNow) ? "   AVAILABLE" : " UNAVAILABLE")));
         button.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_START);
         button.setOnClickListener(listener);
-        button.setTag(position);
+        button.setTag(position + ((daysFromNow > 0)?0:Calendar.getInstance().get(Calendar.HOUR_OF_DAY)));
     }
 
     // Return the size of your dataset (invoked by the layout manager)

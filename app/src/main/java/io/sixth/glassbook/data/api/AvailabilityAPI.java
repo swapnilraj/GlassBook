@@ -41,7 +41,7 @@ public class AvailabilityAPI {
         return cache.roomIsAvailable(room, hoursFromNow);
     }
 
-    public static void bookRoom(Calendar startTime, final int roomNumber,
+    public static void bookRoom(Calendar startTime, final int roomNumber,boolean twoHours,
                                 final GlassBook.RequestListener listener) {
         String requestURL = BASE_URL + String.format(Locale.ENGLISH, "/sgmr%d.request.pl", roomNumber);
         OkHttpClient client = httpClientAPI.getClient();
@@ -53,7 +53,7 @@ public class AvailabilityAPI {
 
         RequestBody formBody = new FormBody.Builder().add("StartTime",
                 Integer.toString(startTime.get(Calendar.HOUR_OF_DAY) + 1))
-                .add("EndTime", Integer.toString(startTime.get(Calendar.HOUR_OF_DAY) + 2))
+                .add("EndTime", Integer.toString(startTime.get(Calendar.HOUR_OF_DAY) + ((twoHours)?3:2)))
                 .add("Fullname", user.getFirstName())
                 .add("Status", user.getStatus())
                 .add("StartDate", Integer.toString(startTime.get(Calendar.DATE)))

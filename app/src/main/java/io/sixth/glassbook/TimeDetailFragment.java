@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
+import android.widget.Switch;
 
 import java.util.Calendar;
 
@@ -66,7 +67,8 @@ public class TimeDetailFragment extends Fragment implements View.OnClickListener
 
     @Override
     public void onClick(View v) {
-        AvailabilityAPI.bookRoom(cal, ((int) v.getTag()) + 1, this);
+        Switch mSwitch = (Switch) v.findViewById(R.id.switch2);
+        AvailabilityAPI.bookRoom(cal, ((int) v.getTag()) + 1, mSwitch.isChecked() , this);
     }
 
     @Override
@@ -85,7 +87,6 @@ public class TimeDetailFragment extends Fragment implements View.OnClickListener
                     Snackbar.make(rootView, R.string.success, Snackbar.LENGTH_LONG).show();
                 } else if (response.contains("This Date is more than 7 days in advance"))
                     Snackbar.make(rootView, "Stupid no further than one week booking rule", Snackbar.LENGTH_LONG).show();
-
                 else {
                     Snackbar.make(rootView, R.string.fail, Snackbar.LENGTH_LONG).show();
                 }
