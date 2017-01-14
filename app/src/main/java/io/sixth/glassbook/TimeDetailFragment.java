@@ -18,6 +18,8 @@ import io.sixth.glassbook.data.api.AvailabilityAPI;
 import io.sixth.glassbook.utils.FragmentUtils;
 import io.sixth.glassbook.utils.TimeDetailAdapter;
 
+import static io.sixth.glassbook.data.api.GlassBook.app;
+
 /**
  * Created by Jorik on 10/01/2017.
  */
@@ -68,7 +70,11 @@ public class TimeDetailFragment extends Fragment implements View.OnClickListener
     @Override
     public void onClick(View v) {
         Switch mSwitch = (Switch) v.findViewById(R.id.switch2);
-        AvailabilityAPI.bookRoom(cal, ((int) v.getTag()) + 1, mSwitch.isChecked() , this);
+        v.setBackgroundColor(app.getResources().getColor(R.color.selected));
+        mAdapter.notifyItemChanged(mAdapter.selected);
+        mAdapter.selected = (int) v.getTag();
+
+//        AvailabilityAPI.bookRoom(cal, ((int) v.getTag()) + 1, mSwitch.isChecked() , this);
     }
 
     @Override

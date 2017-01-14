@@ -11,6 +11,8 @@ import io.sixth.glassbook.R;
 import io.sixth.glassbook.TimeDetailFragment;
 import io.sixth.glassbook.data.api.AvailabilityAPI;
 
+import static io.sixth.glassbook.data.api.GlassBook.app;
+
 /**
  * Created by Jorik on 09/01/2017.
  */
@@ -19,6 +21,7 @@ public class TimeDetailAdapter extends RecyclerView.Adapter<TimeDetailAdapter.Vi
 
     private int parentTime;
     private int daysFromNow;
+    public int selected = -1;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         // each data item is just a string in this case
@@ -70,6 +73,10 @@ public class TimeDetailAdapter extends RecyclerView.Adapter<TimeDetailAdapter.Vi
         }  else {
             view.setBackgroundColor(view.getResources().getColor(R.color.available));
             mSwitch.setVisibility(View.INVISIBLE);
+        }
+
+        if (position == selected) {
+            view.setBackgroundColor(app.getResources().getColor(R.color.selected));
         }
     }
 

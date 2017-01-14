@@ -5,4 +5,5 @@
   <color name="colorAccent">#FF4081</color>
   <color name="available">#32CD32</color>
   <color name="unavailable">#6F8C9F</color>
+  <color name="selected">#00ffff</color>
 </resources>
