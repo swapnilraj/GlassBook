@@ -57,13 +57,17 @@
     </LinearLayout>
 
     <TextView
-        android:id="@+id/date_view"
+        android:id="@+id/book_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/colorPrimary"
         android:textColor="@color/mdtp_white"
         android:textSize="30sp"
+        android:textAlignment="textEnd"
+        android:textAllCaps="true"
+        android:text="Book -->"
         android:paddingStart="6pt"
+        android:paddingEnd="6pt"
         android:paddingTop="4pt"
         android:paddingBottom="4pt"/>
 </LinearLayout>

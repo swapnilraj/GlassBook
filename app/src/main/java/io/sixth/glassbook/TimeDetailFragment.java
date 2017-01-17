@@ -9,12 +9,13 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 import android.widget.Switch;
 
 import java.util.Calendar;
 
-import io.sixth.glassbook.data.api.GlassBook;
 import io.sixth.glassbook.data.api.AvailabilityAPI;
+import io.sixth.glassbook.data.api.GlassBook;
 import io.sixth.glassbook.utils.FragmentUtils;
 import io.sixth.glassbook.utils.TimeDetailAdapter;
 
@@ -24,7 +25,7 @@ import static io.sixth.glassbook.data.api.GlassBook.app;
  * Created by Jorik on 10/01/2017.
  */
 
-public class TimeDetailFragment extends Fragment implements View.OnClickListener, GlassBook.RequestListener {
+public class TimeDetailFragment extends Fragment implements View.OnClickListener, GlassBook.RequestListener, CompoundButton.OnCheckedChangeListener {
     private Calendar cal;
     private View rootView;
     private RecyclerView mRecyclerView;
@@ -63,16 +64,20 @@ public class TimeDetailFragment extends Fragment implements View.OnClickListener
         mRecyclerView.setAdapter(mAdapter);
 
 
+        rootView.findViewById(R.id.book_button).setOnClickListener(this);
         activeFragment = this;
         return rootView;
     }
 
     @Override
     public void onClick(View v) {
-        Switch mSwitch = (Switch) v.findViewById(R.id.switch2);
-        v.setBackgroundColor(app.getResources().getColor(R.color.selected));
-        mAdapter.notifyItemChanged(mAdapter.selected);
-        mAdapter.selected = (int) v.getTag();
+        if (v == rootView.findViewById(R.id.book_button)) {
+            AvailabilityAPI.bookRoom(cal, mAdapter.selected, false, this);
+        }
+        else {
+            setAsSelected(v);
+        }
+
 
 //        AvailabilityAPI.bookRoom(cal, ((int) v.getTag()) + 1, mSwitch.isChecked() , this);
     }
@@ -98,5 +103,21 @@ public class TimeDetailFragment extends Fragment implements View.OnClickListener
                 }
             }
         });
+    }
+
+    private void setAsSelected (View v) {
+        v.setBackgroundColor(app.getResources().getColor(R.color.selected));
+        mAdapter.selected = (int) v.getTag();
+        for (int position = 0; position < 9; position++) {
+            if (position != mAdapter.selected)
+                mAdapter.notifyItemChanged(position);
+        }
+    }
+
+    @Override
+    public void onCheckedChanged (CompoundButton mSwitch, boolean state) {
+        if (state == true) {
+            setAsSelected((View) mSwitch.getParent().getParent());
+        }
     }
 }

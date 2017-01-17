@@ -60,10 +60,12 @@ public class TimeDetailAdapter extends RecyclerView.Adapter<TimeDetailAdapter.Vi
         name.setText("Room " + position);
         Switch mSwitch = (Switch) view.findViewById(R.id.switch2);
         mSwitch.setChecked(false);
+        mSwitch.setOnCheckedChangeListener(TimeDetailFragment.activeFragment);
 
 
         boolean firstHour = AvailabilityAPI.isRoomAvailable(position, parentTime, daysFromNow);
-        boolean secondHour = AvailabilityAPI.isRoomAvailable(position, parentTime + 1, daysFromNow);
+        boolean secondHour = false;
+        if (parentTime < 23) secondHour = AvailabilityAPI.isRoomAvailable(position, parentTime + 1, daysFromNow);
         if (!firstHour) {
             view.setBackgroundColor(view.getResources().getColor(R.color.unavailable));
             mSwitch.setVisibility(View.INVISIBLE);
