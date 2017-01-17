@@ -107,10 +107,13 @@ public class TimeDetailFragment extends Fragment implements View.OnClickListener
 
     private void setAsSelected (View v) {
         v.setBackgroundColor(app.getResources().getColor(R.color.selected));
-        mAdapter.selected = (int) v.getTag();
-        for (int position = 0; position < 9; position++) {
-            if (position != mAdapter.selected)
-                mAdapter.notifyItemChanged(position);
+        int selection = (int) v.getTag();
+        if (selection != mAdapter.selected) {
+            mAdapter.selected = selection;
+            for (int position = 0; position < 9; position++) {
+                if (position != mAdapter.selected)
+                    mAdapter.notifyItemChanged(position);
+            }
         }
     }
 

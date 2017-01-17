@@ -95,7 +95,7 @@ public class AvailabilityScheduleFragment extends Fragment
       args.putInt(DAY_CODE, daysFromNow);
       args.putInt(TIME, Integer.parseInt(v.getTag().toString()));
       fragment.setArguments(args);
-      ActivityUtils.loadFragment(getActivity().getSupportFragmentManager(), fragment, R.id.container_main);
+      ActivityUtils.addToBackStack(getActivity().getSupportFragmentManager(), fragment, R.id.container_main);
 
     } else if (v instanceof TextView) {
       Calendar now = Calendar.getInstance();
@@ -135,12 +135,6 @@ public class AvailabilityScheduleFragment extends Fragment
 
         else {
           Snackbar.make(rootView, R.string.fail, Snackbar.LENGTH_LONG).show();
-//          final String selector = "body > p:nth-child(3)";
-//          final Document doc = Jsoup.parse(response);
-//          final Elements ele = doc.select(selector);
-//          final String metaContainer = ele.text();
-//          final String content =
-//              metaContainer.substring(0, metaContainer.indexOf(user.getFirstName()));
         }
       }
     });
@@ -149,33 +143,10 @@ public class AvailabilityScheduleFragment extends Fragment
   @Override public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
     roomNumber = position + 1;
   }
+
   @Override public void onNothingSelected(AdapterView<?> parent) {
 
   }
-
-  // move to a Realm change listener that updates the buttons as the cache does.
-//  private void updateButtons() {
-//    LinearLayout buttonContainer = (LinearLayout) rootView.findViewById(R.id.button_container);
-//    Calendar rightNow = Calendar.getInstance();
-//    int currentTime = ((daysFromNow == 0)?rightNow.get(Calendar.HOUR_OF_DAY):0);
-//
-//    for (int button = 0; button < availabilityButtons.length; button++) {
-//      int time = currentTime + button;
-//      if (availabilityButtons[button] != null)
-//        buttonContainer.removeView(availabilityButtons[button]);
-//      if (time < 24) {
-//        availabilityButtons[button] = new Button(GlassBook.app);
-//        availabilityButtons[button].setText(String.format(
-//                getResources().getString(R.string.time_stamp),
-//                ((time) % 24),
-//                ((AvailabilityAPI.isTimeAvailable(time, daysFromNow) ? "   AVAILABLE" : " UNAVAILABLE"))));
-//        availabilityButtons[button].setTextAlignment(View.TEXT_ALIGNMENT_TEXT_START);
-//        availabilityButtons[button].setOnClickListener(this);
-//        availabilityButtons[button].setTag(time);
-//        buttonContainer.addView(availabilityButtons[button]);
-//      }
-//    }
-//  }
 
   public void setParent(Fragment fragment) {
     parent = (SwipeFragment) fragment;

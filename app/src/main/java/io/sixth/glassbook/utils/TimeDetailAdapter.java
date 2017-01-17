@@ -57,7 +57,7 @@ public class TimeDetailAdapter extends RecyclerView.Adapter<TimeDetailAdapter.Vi
 
         view.setTag(position);
         TextView name = (TextView) view.findViewById(R.id.roomName);
-        name.setText("Room " + position);
+        name.setText("Room " + (position + 1));
         Switch mSwitch = (Switch) view.findViewById(R.id.switch2);
         mSwitch.setChecked(false);
         mSwitch.setOnCheckedChangeListener(TimeDetailFragment.activeFragment);

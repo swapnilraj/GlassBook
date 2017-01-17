@@ -21,30 +21,14 @@
             >
 
             <TextView
-                android:text="TextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/textView3"
-                android:layout_weight="1"
-                android:textStyle="bold"/>
-
-            <TextView
-                android:text="TextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/textView2"
-                android:layout_weight="1"
-                android:textStyle="bold"
-                android:textAlignment="center"/>
-
-            <TextView
-                android:text="TextView"
+                android:text="+1h"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/textView"
                 android:layout_weight="1"
                 android:textStyle="bold"
-                android:textAlignment="textEnd"/>
+                android:textAlignment="textEnd"
+                android:paddingEnd="15dp"/>
         </LinearLayout>
 
         <android.support.v7.widget.RecyclerView

@@ -17,4 +17,12 @@ public class ActivityUtils {
         .replace(container, fragment)
         .commit();
   }
+
+  public static void addToBackStack(FragmentManager fragmentManager, Fragment detailFragment, int container) {
+    fragmentManager.beginTransaction()
+            .replace(container, detailFragment)
+            // Add this transaction to the back stack
+            .addToBackStack(null)
+            .commit();
+  }
 }
